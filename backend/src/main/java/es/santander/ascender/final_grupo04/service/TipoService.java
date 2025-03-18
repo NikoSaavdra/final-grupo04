@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.santander.ascender.final_grupo04.model.Tipo;
-import es.santander.ascender.final_grupo04.repository.ItemRepository;
 import es.santander.ascender.final_grupo04.repository.TipoRepository;
-
 
 @Transactional
 @Service
@@ -19,8 +17,10 @@ public class TipoService {
     @Autowired
     private TipoRepository tipoRepository;
 
-    @Autowired
-    private ItemRepository itemRepository;
+    @Transactional
+    public Tipo crearTipo(Tipo tipo) {
+        return tipoRepository.save(tipo);
+    }
 
     @Transactional(readOnly = true)
     public List<Tipo> listarTipos() {
@@ -28,30 +28,18 @@ public class TipoService {
     }
 
     @Transactional
-    public Tipo crearTipo(Tipo tipo) {
-        return tipoRepository.save(tipo);
-    }
-
-    @Transactional
-    public Tipo actualizarTipo(Long tipoId, String nuevoNombre) {
-        Optional<Tipo> tipoOptional = tipoRepository.findById(tipoId);
+    public Tipo actualizarTipo(Long id, String nombre) {
+        Optional<Tipo> tipoOptional = tipoRepository.findById(id);
         if (tipoOptional.isPresent()) {
             Tipo tipo = tipoOptional.get();
-            tipo.setNombre(nuevoNombre);
+            tipo.setNombre(nombre);
             return tipoRepository.save(tipo);
         }
         return null;
-
     }
 
     @Transactional
     public void eliminarTipo(Long id) {
-        long count = itemRepository.countByTipoId(id);
-        if (count > 0) {
-            throw new IllegalArgumentException("No puedes eliminar el tipo porque hay items asociados");
-        }
         tipoRepository.deleteById(id);
     }
 }
-
-

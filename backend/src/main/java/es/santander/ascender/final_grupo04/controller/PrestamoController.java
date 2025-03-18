@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.santander.ascender.final_grupo04.model.Prestamo;
@@ -26,41 +27,14 @@ public class PrestamoController {
     private PrestamoService prestamoService;
 
     @PostMapping
-        public ResponseEntity<Prestamo> crearPrestamo(@Valid @RequestBody Long itemId) {
-         
-          // Obtener el préstamo usando el servicio prestamoService
-        Prestamo prestamo = prestamoService.obtenerPrestamoPorId(itemId);
-
-        // Verificar si se encontró el préstamo
-        if (prestamo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No se encontró el préstamo
-            }
-        
-         String nombrePersona = prestamo.getPersona();
-        Prestamo createdPrestamo = prestamoService.crearPrestamo(itemId, nombrePersona);
-        return new ResponseEntity<>(createdPrestamo, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/historial/nombre")
-        public ResponseEntity<List<Prestamo>> listaraHistorialDePrestamos(String nombre) {
-        List<Prestamo> prestamos = prestamoService.listarHistorialDePrestamos(nombre);
-        return new ResponseEntity<>(prestamos, HttpStatus.OK);
-    }
-
-    @GetMapping("/historial/fecha")
-        public ResponseEntity<List<Prestamo>> listaraHistorialDePrestamos(LocalDate fechaPrestamo) {
-        List<Prestamo> prestamos = prestamoService.listarHistorialDePrestamos(fechaPrestamo);
-        return new ResponseEntity<>(prestamos, HttpStatus.OK);
-    }
-
-    @GetMapping("/item/disponible")
-        public ResponseEntity<List<Prestamo>> listarItemDisponibles () {
-        List<Prestamo> prestamos = prestamoService.listarItemDisponibles ();
-        return new ResponseEntity<>(prestamos, HttpStatus.OK);
+    public ResponseEntity<Prestamo> crearPrestamo(@Valid @RequestBody Long itemId, @RequestParam String persona,
+            @RequestParam LocalDate fechaPrevistaDevolucion) {
+        Prestamo prestamo = prestamoService.crearPrestamo(itemId, persona, fechaPrevistaDevolucion);
+        return new ResponseEntity<>(prestamo, HttpStatus.CREATED);
     }
 
     @PutMapping("/devolver")
-    public ResponseEntity<Prestamo> devolverItem (@PathVariable Long id) {
+    public ResponseEntity<Prestamo> devolverItem(@PathVariable Long id) {
         Prestamo devolucionPrestamo = prestamoService.devolverItem(id);
         if (devolucionPrestamo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,8 +42,11 @@ public class PrestamoController {
         return new ResponseEntity<>(devolucionPrestamo, HttpStatus.OK);
     }
 
+    @GetMapping("/activos")
+    public ResponseEntity<List<Prestamo>> listarPrestamosActivos(@RequestParam(required = false) String persona,
+            @RequestParam(required = false) LocalDate fecha) {
+        List<Prestamo> prestamos = prestamoService.listarPrestamosActivos(persona, fecha);
+        return new ResponseEntity<>(prestamos, HttpStatus.OK);
+    }
 
-
-
-    //hacer los endpoints de lo que hay en el prestamo service
 }

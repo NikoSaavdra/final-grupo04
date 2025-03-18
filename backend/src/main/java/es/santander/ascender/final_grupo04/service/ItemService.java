@@ -4,53 +4,55 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.santander.ascender.final_grupo04.model.Item;
 import es.santander.ascender.final_grupo04.repository.ItemRepository;
 
+@Service
+@Transactional
 public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
 
+    public Item crearItem(Item item) {
+        item.setEstado(true);
+        return itemRepository.save(item);
+    }
+
     @Transactional(readOnly = true)
     public List<Item> listarItemDisponibles() {
 
-        return itemRepository.findByDisponibleTrue();
+        return itemRepository.findByEstadoTrue();
     }
 
-    public Item crearItem(Item item) {
-        item.setEstado(true); 
-        return itemRepository.save(item);
-    }
-
-    public Item actualizarItem(Long id, Item datosActualizados) {
-        Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item no encontrado"));
-
-        item.setTitulo(datosActualizados.getTitulo());
-        item.setUbicacion(datosActualizados.getUbicacion());
-        
-        item.setEstado(datosActualizados.isEstado());
-        return itemRepository.save(item);
-    }
-
-    
     @Transactional(readOnly = true)
-        public Optional<Item> buscarItem(Long id) {
+    public Optional<Item> buscarItem(Long id) {
         return itemRepository.findById(id);
     }
 
-
-
-    
-
-    public boolean eliminarItem(Long id) {
-        if (itemRepository.existsById(id)) {
-            itemRepository.deleteById(id);
-            return true;
+    @Transactional
+    public Item actualizarItem(Long id, Item itemDetails) {
+        Optional<Item> itemOptional = itemRepository.findById(id);
+        if (itemOptional.isPresent()) {
+            Item item = itemOptional.get();
+            item.setTitulo(itemDetails.getTitulo());
+            item.setUbicacion(itemDetails.getUbicacion());
+            item.setTipo(itemDetails.getTipo());
+            return itemRepository.save(item);
         }
-        return false;
+        return null;
+    }
+
+    @Transactional
+    public void eliminarItem(Long id) {
+        itemRepository.deleteById(id);
+    }
+
+    public List<Item> buscarItems(String titulo, String tipo, String ubicacion) {
+        // Implementar un método personalizado en el repositorio para manejar la búsqueda avanzada
+        return itemRepository.buscarPorCriterios(titulo, tipo, ubicacion);
     }
 }

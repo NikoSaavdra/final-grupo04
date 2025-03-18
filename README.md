@@ -1,1 +1,1 @@
-Poyecto final en gupo. Nicolás, Carlos, Paula, Lara y Andrea.
+Proyecto final en grupo. Nicolás, Carlos, Paula, Lara y Andrea.

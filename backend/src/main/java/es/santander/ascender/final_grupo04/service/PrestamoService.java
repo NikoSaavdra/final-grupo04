@@ -3,7 +3,6 @@ package es.santander.ascender.final_grupo04.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +11,6 @@ import es.santander.ascender.final_grupo04.model.Item;
 import es.santander.ascender.final_grupo04.model.Prestamo;
 import es.santander.ascender.final_grupo04.repository.ItemRepository;
 import es.santander.ascender.final_grupo04.repository.PrestamoRepository;
-
 
 @Service
 @Transactional
@@ -25,27 +23,28 @@ public class PrestamoService {
     private ItemRepository itemRepository;
 
     @Transactional
-    public Prestamo crearPrestamo(Long itemId) {
+    public Prestamo crearPrestamo(Long itemId, String persona, LocalDate fechaPrevistaDevolucion) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item no encontrado"));
 
+        if (!item.isEstado()) {
+            throw new RuntimeException("El item no está disponible");
+        }
 
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("item no encontrado"));
-
-
-        // Crear el préstamo
         Prestamo prestamo = new Prestamo();
-        prestamo.setPersona(nombre);
-        prestamo.setItem(item);
+        prestamo.setPersona(persona);
         prestamo.setFechaPrestamo(LocalDate.now());
-        //prestamo.setFechaPrevistaDevolucion(); // ver
+        prestamo.setFechaPrevistaDevolucion(fechaPrevistaDevolucion);
         prestamo.setActivo(true);
+        prestamo.setItems(List.of(item));
 
-        // Actualizar el estado del item
+        // Cambiar estado del ítem a "No disponible"
         item.setEstado(false);
+        item.setPrestamo(prestamo);
 
-        // Guardar el préstamo y actualizar el item
+        // Guardar ítem y préstamo
         itemRepository.save(item);
         return prestamoRepository.save(prestamo);
-
     }
 
     @Transactional
@@ -57,37 +56,28 @@ public class PrestamoService {
             throw new RuntimeException("El préstamo ya fue devuelto");
         }
 
-        // Marcar el préstamo como devuelto
+        // Marcar como devuelto
         prestamo.setFechaDevolucion(LocalDate.now());
         prestamo.setActivo(false);
 
-        // Actualizar el estado del item
-        Item item = prestamo.getItem();
-        item.setEstado(true);
+        // Cambiar estado de los ítems asociados a "Disponible"
+        for (Item item : prestamo.getItems()) {
+            item.setEstado(true);
+            item.setPrestamo(null);
+            itemRepository.save(item);
+        }
 
-        itemRepository.save(item);
         return prestamoRepository.save(prestamo);
     }
 
-    public List<Prestamo> listarItemDisponibles() {   // Lista de prestamos activos
-        return prestamoRepository.findByActivoTrue();
+    public List<Prestamo> listarPrestamosActivos(String persona, LocalDate fecha) {
+        if (persona != null) {
+            return prestamoRepository.findByPersonaAndActivoTrue(persona);
+        } else if (fecha != null) {
+            return prestamoRepository.findByFechaPrestamoAndActivoTrue(fecha);
+        } else {
+            return prestamoRepository.findByActivoTrue();
+        }
     }
-
-    public List<Prestamo> listarHistorialDePrestamos(String nombre) {    // Lista de prestamo por persona
-        return prestamoRepository.findByNombre(nombre);
-    }
-
-    public List<Prestamo> listarHistorialDePrestamos(LocalDate fechaPrestamo) {    // Lista de prestamo por persona
-        return prestamoRepository.findByFecha(fechaPrestamo);
-    }
-
-     // Método para obtener un préstamo por ID
-     public Prestamo obtenerPrestamoPorId(Long id) {
-        Optional<Prestamo> prestamo = prestamoRepository.findById(id);
-        // Retorna el Prestamo si existe, o null si no se encuentra
-        return prestamo.orElse(null);
-    }
-
-
 
 }
