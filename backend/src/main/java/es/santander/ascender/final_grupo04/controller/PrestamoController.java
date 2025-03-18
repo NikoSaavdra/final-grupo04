@@ -3,6 +3,7 @@ package es.santander.ascender.final_grupo04.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,22 +16,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.santander.ascender.final_grupo04.model.Prestamo;
+import es.santander.ascender.final_grupo04.service.PrestamoService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/prestamo")
 public class PrestamoController {
 
+    @Autowired
+    private PrestamoService  prestamoService;
 
     @PostMapping
         public ResponseEntity<Prestamo> createPrestamo(@Valid @RequestBody Prestamo prestamo) {
-        Prestamo createdPrestamo = prestamoService.createPrestamo(prestamo);
+        Prestamo createdPrestamo = prestamoService.crearPrestamo(prestamo);
         return new ResponseEntity<>(createdPrestamo, HttpStatus.CREATED);
     }
 
     @GetMapping
-        public ResponseEntity<List<Prestamo>> getAllPrestamos() {
-        List<Prestamo> prestamos = prestamoService.getAllPrestamos();
+        public ResponseEntity<List<Prestamo>> listaraHistorialDePrestamos() {
+        List<Prestamo> prestamos = prestamoService.listarHistorialDePrestamos();
         return new ResponseEntity<>(prestamos, HttpStatus.OK);
     }
 
@@ -41,18 +45,4 @@ public class PrestamoController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
-        public ResponseEntity<Prestamo> updatePrestamo(@PathVariable Long id, @Valid @RequestBody Prestamo prestamoDetails) {
-        Prestamo updatedPrestamo = prestamoService.updatePrestamo(id, prestamoDetails);
-        if (updatedPrestamo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedPrestamo, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deletePrestamo(@PathVariable Long id) {
-        prestamoService.deletePrestamo(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }
