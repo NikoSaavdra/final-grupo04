@@ -18,6 +18,7 @@ public class Prestamo {
     private LocalDate fechaPrestamo;
     private LocalDate fechaPrevistaDevolucion;
     private LocalDate fechaDevolucion;
+    private boolean activo;
 
     @OneToMany
     private Item item;
@@ -25,12 +26,13 @@ public class Prestamo {
     public Prestamo() {
     }
 
-    public Prestamo(Long id, String persona, LocalDate fechaPrestamo, LocalDate fechaPrevistaDevolucion, LocalDate fechaDevolucion, Item item) {
+    public Prestamo(Long id, String persona, LocalDate fechaPrestamo, LocalDate fechaPrevistaDevolucion, LocalDate fechaDevolucion, boolean activo, Item item) {
         this.id = id;
         this.persona = persona;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaPrevistaDevolucion= fechaPrevistaDevolucion;
         this.fechaDevolucion = fechaDevolucion;
+        this.activo=activo;
         this.item = item;
     }
 
@@ -81,6 +83,14 @@ public class Prestamo {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
  
 }
