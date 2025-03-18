@@ -1,42 +1,37 @@
 package es.santander.ascender.final_grupo04.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Prestamo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String persona;
-    private Date fecha_prestamo;
-    private Date fecha_devolucion;
+    private LocalDate fechaPrestamo;
+    private LocalDate fechaPrevistaDevolucion;
+    private LocalDate fechaDevolucion;
 
-    @OneToMany(mappedBy = "item_id")
+    @OneToMany
     private Item item;
-
-    @ManyToOne
-    @JoinColumn(name = "prestamo_id")
-    private Prestamo prestamo;
 
     public Prestamo() {
     }
 
-    public Prestamo(Long id, String persona, Date fecha_prestamo, Date fecha_devolucion, Item item, Prestamo prestamo) {
+    public Prestamo(Long id, String persona, LocalDate fechaPrestamo, LocalDate fechaPrevistaDevolucion, LocalDate fechaDevolucion, Item item) {
         this.id = id;
         this.persona = persona;
-        this.fecha_prestamo = fecha_prestamo;
-        this.fecha_devolucion = fecha_devolucion;
+        this.fechaPrestamo = fechaPrestamo;
+        this.fechaPrevistaDevolucion= fechaPrevistaDevolucion;
+        this.fechaDevolucion = fechaDevolucion;
         this.item = item;
-        this.prestamo = prestamo;
     }
 
     public Long getId() {
@@ -55,20 +50,29 @@ public class Prestamo {
         this.persona = persona;
     }
 
-    public Date getFecha_prestamo() {
-        return fecha_prestamo;
+    public LocalDate getFechaPrestamo() {
+        return fechaPrestamo;
     }
 
-    public void setFecha_prestamo(Date fecha_prestamo) {
-        this.fecha_prestamo = fecha_prestamo;
+    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+        this.fechaPrestamo = fechaPrestamo;
+    }
+    
+    public LocalDate getFechaPrevistaDevolucion() {
+        return fechaPrevistaDevolucion;
     }
 
-    public Date getFecha_devolucion() {
-        return fecha_devolucion;
+    public void setFechaPrevistaDevolucion(LocalDate fechaPrevistaDevolucion) {
+        this.fechaPrevistaDevolucion = fechaPrevistaDevolucion;
+    }
+    
+
+    public LocalDate getFechaDevolucion() {
+        return fechaDevolucion;
     }
 
-    public void setFecha_devolucion(Date fecha_devolucion) {
-        this.fecha_devolucion = fecha_devolucion;
+    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
     }
 
     public Item getItem() {
@@ -78,14 +82,5 @@ public class Prestamo {
     public void setItem(Item item) {
         this.item = item;
     }
-
-    public Prestamo getPrestamo() {
-        return prestamo;
-    }
-
-    public void setPrestamo(Prestamo prestamo) {
-        this.prestamo = prestamo;
-    }
-    
  
 }

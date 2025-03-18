@@ -7,30 +7,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Length(max = 100)
     private String titulo;  
     private String ubicacion;
     private boolean estado;
-    private String tipo;
+    
     @ManyToOne
-    @JoinColumn(name = "tipo_id")
+    private Tipo tipo;
 
-    @OneToMany(mappedBy = "prestamo_id")
+    @ManyToOne
     private Prestamo prestamo;
     
     public Item() {
     }
-    public Item(Long id, @Length(max = 100) String titulo, String ubicacion, boolean estado, String tipo,
+    public Item(Long id, @Length(max = 100) String titulo, String ubicacion, boolean estado, Tipo tipo,
             Prestamo prestamo) {
         this.id = id;
         this.titulo = titulo;
@@ -63,10 +61,10 @@ public class Item {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
     public Prestamo getPrestamo() {
