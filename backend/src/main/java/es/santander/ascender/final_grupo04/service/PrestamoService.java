@@ -3,6 +3,7 @@ package es.santander.ascender.final_grupo04.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +79,13 @@ public class PrestamoService {
 
     public List<Prestamo> listarHistorialDePrestamos(LocalDate fechaPrestamo) {    // Lista de prestamo por persona
         return prestamoRepository.findByFecha(fechaPrestamo);
+    }
+
+     // Método para obtener un préstamo por ID
+     public Prestamo obtenerPrestamoPorId(Long id) {
+        Optional<Prestamo> prestamo = prestamoRepository.findById(id);
+        // Retorna el Prestamo si existe, o null si no se encuentra
+        return prestamo.orElse(null);
     }
 
 

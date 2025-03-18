@@ -11,5 +11,7 @@ public interface PrestamoRepository extends JpaRepository<Prestamo,Long> {
     boolean existsByNombreUsuarioAndActivoTrue(String nombre); // Verifica si la persona tiene un préstamo activo.
 
     List<Prestamo> findByNombre(String nombre); // Busca todos los préstamos de un usuario.
+    
+    List<Prestamo> findByActivoTrue(); // Lista de prestamos activos
 
 }

@@ -23,11 +23,21 @@ import jakarta.validation.Valid;
 public class PrestamoController {
 
     @Autowired
-    private PrestamoService  prestamoService;
+    private PrestamoService prestamoService;
 
     @PostMapping
         public ResponseEntity<Prestamo> crearPrestamo(@Valid @RequestBody Long itemId) {
-        Prestamo createdPrestamo = prestamoService.crearPrestamo(itemId);
+         
+          // Obtener el préstamo usando el servicio prestamoService
+        Prestamo prestamo = prestamoService.obtenerPrestamoPorId(itemId);
+
+        // Verificar si se encontró el préstamo
+        if (prestamo == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No se encontró el préstamo
+            }
+        
+         String nombrePersona = prestamo.getPersona();
+        Prestamo createdPrestamo = prestamoService.crearPrestamo(itemId, nombrePersona);
         return new ResponseEntity<>(createdPrestamo, HttpStatus.CREATED);
     }
 
@@ -61,4 +71,5 @@ public class PrestamoController {
 
 
 
+    //hacer los endpoints de lo que hay en el prestamo service
 }
