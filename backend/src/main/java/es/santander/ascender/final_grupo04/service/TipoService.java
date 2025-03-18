@@ -1,14 +1,16 @@
 package es.santander.ascender.final_grupo04.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.santander.ascender.final_grupo04.model.Tipo;
+import es.santander.ascender.final_grupo04.repository.ItemRepository;
 import es.santander.ascender.final_grupo04.repository.TipoRepository;
-import jakarta.transaction.Transactional;
+
 
 @Transactional
 @Service
@@ -16,6 +18,9 @@ public class TipoService {
 
     @Autowired
     private TipoRepository tipoRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Transactional(readOnly = true)
     public List<Tipo> listarTipos() {
@@ -40,15 +45,12 @@ public class TipoService {
     }
 
     @Transactional
-    public void eliminarTipo(Long tipoId) {
-        Tipo tipo = tipoRepository.findById(tipoId)
-                .orElseThrow(() -> new RuntimeException("Tipo no encontrado"));
-
-        if (!tipo.getItem().isEmpty()) {
-            throw new RuntimeException("No se puede eliminar un tipo que tiene items asociados");
+    public void eliminarTipo(Long id) {
+        long count = itemRepository.countByTipoId(id);
+        if (count > 0) {
+            throw new IllegalArgumentException("No puedes eliminar el tipo porque hay items asociados");
         }
-
-        tipoRepository.delete(tipo);
+        tipoRepository.deleteById(id);
     }
 }
 
