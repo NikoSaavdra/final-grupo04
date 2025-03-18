@@ -39,8 +39,8 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-        public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-        Optional<Item> item = itemService.getItemById(id);
+        public ResponseEntity<Item> buscarItem(@PathVariable Long id) {
+        Optional<Item> item = itemService.buscarItem(id);
         return item.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

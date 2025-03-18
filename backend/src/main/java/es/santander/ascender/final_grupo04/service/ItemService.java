@@ -1,8 +1,10 @@
 package es.santander.ascender.final_grupo04.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.santander.ascender.final_grupo04.model.Item;
 import es.santander.ascender.final_grupo04.repository.ItemRepository;
@@ -12,6 +14,7 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Transactional(readOnly = true)
     public List<Item> listarItemDisponibles() {
 
         return itemRepository.findByDisponibleTrue();
@@ -34,12 +37,12 @@ public class ItemService {
     }
 
     
-    public Item buscarItem(Long id) {
-
-        return itemRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Item no encontrada"));
+    @Transactional(readOnly = true)
+        public Optional<Item> buscarItem(Long id) {
+        return itemRepository.findById(id);
     }
-    // Ordenar
+
+
 
     
 
