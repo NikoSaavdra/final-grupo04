@@ -24,7 +24,7 @@ public class PrestamoService {
     private ItemRepository itemRepository;
 
     @Transactional
-    public Prestamo realizarPrestamo(Long itemId) {
+    public Prestamo crearPrestamo(Long itemId) {
 
 
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("item no encontrado"));

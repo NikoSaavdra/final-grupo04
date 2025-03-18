@@ -27,14 +27,14 @@ public class PrestamoController {
     private PrestamoService  prestamoService;
 
     @PostMapping
-        public ResponseEntity<Prestamo> createPrestamo(@Valid @RequestBody Prestamo prestamo) {
+        public ResponseEntity<Prestamo> crearPrestamo(@Valid @RequestBody Prestamo prestamo) {
         Prestamo createdPrestamo = prestamoService.crearPrestamo(prestamo);
         return new ResponseEntity<>(createdPrestamo, HttpStatus.CREATED);
     }
 
     @GetMapping
-        public ResponseEntity<List<Prestamo>> listaraHistorialDePrestamos() {
-        List<Prestamo> prestamos = prestamoService.listarHistorialDePrestamos();
+        public ResponseEntity<List<Prestamo>> listaraHistorialDePrestamos(String nombre) {
+        List<Prestamo> prestamos = prestamoService.listarHistorialDePrestamos(nombre);
         return new ResponseEntity<>(prestamos, HttpStatus.OK);
     }
 
