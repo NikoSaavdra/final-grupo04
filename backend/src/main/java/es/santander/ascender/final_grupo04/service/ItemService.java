@@ -34,6 +34,11 @@ public class ItemService {
     }
 
     
+    public Item buscarItem(Long id) {
+
+        return itemRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Item no encontrada"));
+    }
     // Ordenar
 
     

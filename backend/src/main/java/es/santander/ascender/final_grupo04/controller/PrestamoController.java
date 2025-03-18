@@ -61,5 +61,4 @@ public class PrestamoController {
 
 
 
-    //hacer los endpoints de lo que hay en el prestamo service
 }
