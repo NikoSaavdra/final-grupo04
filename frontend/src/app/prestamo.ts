@@ -1,12 +1,14 @@
+import { Item } from "./item";
+
 export class Prestamo {
 
     constructor(
         public id:number,
         public persona:string,
-        public fechaprestamo:
-        public fechaprevistadevolucion:
-        public fechadevolucion:
+        public fechaprestamo:Date,
+        public fechaprevistadevolucion:Date,
+        public fechadevolucion:Date,
         public activo:boolean,
-        public items:
-    )
+        public items:Item[],
+    ){}
 }
