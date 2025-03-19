@@ -2,6 +2,8 @@ package es.santander.ascender.final_grupo04.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class Tipo {
 
     private String formato;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL)
     private List<Item> items;
 
