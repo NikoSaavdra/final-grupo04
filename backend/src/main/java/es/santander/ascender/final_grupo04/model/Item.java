@@ -2,6 +2,8 @@ package es.santander.ascender.final_grupo04.model;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class Item {
     @JoinColumn(name = "tipo_id", nullable = false)
     private Tipo tipo;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "prestamo_id")
     private Prestamo prestamo;
