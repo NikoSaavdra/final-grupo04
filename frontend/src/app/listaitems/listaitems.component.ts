@@ -63,31 +63,6 @@ export class ListaitemsComponent {
     );
   }
 
-
-  ctualizarItem(id: number): void {
-
-    const itemToUpdate: Item = {
-      id: id,
-      titulo: 'Nuevo Titulo',
-      ubicacion: 'Nueva Ubicacion',
-      estado: true,
-      tipo: new Tipo(id,'','',[]),
-      prestamo: new Prestamo(id,'',fechaDate,'','',true,[]),
-    };
-  
-    this.itemService.actualizarItem(id, itemToUpdate).subscribe(
-      (response: any) => {
-        this.mensaje = 'Item actualizado exitosamente!';
-        console.log(response);
-        this.listarItems();
-      },
-      (error: any) => {
-        this.mensaje = 'Error al actualizar el item';
-        console.error(error);
-      }
-    );
-  }
-
   eliminarItem(id: number): void {
     this.itemService.eliminarItem(id).subscribe(
       () => {
