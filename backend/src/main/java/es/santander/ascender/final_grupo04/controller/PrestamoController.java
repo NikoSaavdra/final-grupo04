@@ -27,7 +27,7 @@ public class PrestamoController {
     private PrestamoService prestamoService;
 
     @PostMapping
-    public ResponseEntity<Prestamo> crearPrestamo(@Valid @RequestBody Long itemId, @RequestParam String persona,
+    public ResponseEntity<Prestamo> crearPrestamo(@Valid @RequestParam Long itemId, @RequestParam String persona,
             @RequestParam LocalDate fechaPrevistaDevolucion) {
         Prestamo prestamo = prestamoService.crearPrestamo(itemId, persona, fechaPrevistaDevolucion);
         return new ResponseEntity<>(prestamo, HttpStatus.CREATED);
