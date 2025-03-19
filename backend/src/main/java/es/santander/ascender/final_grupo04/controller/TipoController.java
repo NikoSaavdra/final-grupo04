@@ -25,21 +25,20 @@ public class TipoController {
     @Autowired
     private TipoService tipoService;
 
-
     @PostMapping
-        public ResponseEntity<Tipo> crearTipo(@Valid @RequestBody Tipo tipo) {
+    public ResponseEntity<Tipo> crearTipo(@Valid @RequestBody Tipo tipo) {
         Tipo createdTipo = tipoService.crearTipo(tipo);
         return new ResponseEntity<>(createdTipo, HttpStatus.CREATED);
     }
 
     @GetMapping
-        public ResponseEntity<List<Tipo>> listarTipos() {
+    public ResponseEntity<List<Tipo>> listarTipos() {
         List<Tipo> tipos = tipoService.listarTipos();
         return new ResponseEntity<>(tipos, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-        public ResponseEntity<Tipo> actualizarTipo(@PathVariable Long id, @Valid @RequestBody String nombre) {
+    public ResponseEntity<Tipo> actualizarTipo(@PathVariable Long id, @Valid @RequestBody String nombre) {
         Tipo updatedTipo = tipoService.actualizarTipo(id, nombre);
         if (updatedTipo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,8 +47,17 @@ public class TipoController {
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<Void> eliminarTipo(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarTipo(@PathVariable Long id) {
         tipoService.eliminarTipo(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/formatos/{tipoId}")
+    public ResponseEntity<List<String>> obtenerFormatosPorTipo(@PathVariable Long tipoId) {
+        List<String> formatos = tipoService.obtenerFormatosPorTipo(tipoId);
+        if (formatos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(formatos, HttpStatus.OK);
     }
 }

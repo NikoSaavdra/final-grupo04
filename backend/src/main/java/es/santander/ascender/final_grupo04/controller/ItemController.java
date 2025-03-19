@@ -5,19 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-// import es.santander.ascender.final_grupo04.model.Formato;
-import es.santander.ascender.final_grupo04.model.Item;
-// import es.santander.ascender.final_grupo04.service.FormatoService;
+import es.santander.ascender.final_grupo04.DTO.ItemDTO;
+import es.santander.ascender.final_grupo04.DTO.ItemResponseDTO;
 import es.santander.ascender.final_grupo04.service.ItemService;
 import jakarta.validation.Valid;
 
@@ -28,53 +19,53 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    // @Autowired
-    // private FormatoService formatoService;
-
-    @Autowired
-
-
-
-    // // Endpoint para obtener los formatos asociados a un tipo
-    // @GetMapping("/formatos/{tipo_id}")
-    // public ResponseEntity<List<Formato>> obtenerFormatosPorTipo( Long tipo_id) {
-    //     List<Formato> formatos = formatoService.obtenerFormatosPorTipo(tipo_id);
-    //     return ResponseEntity.ok(formatos);
-    // }
-
+    /**
+     * Crea un nuevo ítem con formato y tipo validados.
+     */
     @PostMapping
-    public ResponseEntity<Item> crearItem(@Valid @RequestBody Item item) {
-        Item createdItem = itemService.crearItem(item);
+    public ResponseEntity<ItemResponseDTO> crearItem(@Valid @RequestBody ItemDTO itemDTO) {
+        ItemResponseDTO createdItem = itemService.crearItemConFormato(itemDTO);
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
+    /**
+     * Lista todos los ítems disponibles.
+     */
     @GetMapping
-    public ResponseEntity<List<Item>> listarItemsDisponibles() {
-        List<Item> items = itemService.listarItemDisponibles();
+    public ResponseEntity<List<ItemResponseDTO>> listarItemsDisponibles() {
+        List<ItemResponseDTO> items = itemService.listarItemDisponibles();
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    /**
+     * Busca ítems por título, tipo y ubicación, con opción de ordenación.
+     */
     @GetMapping("/buscar")
-    public ResponseEntity<List<Item>> buscarItems(@RequestParam(required = false) String titulo,
+    public ResponseEntity<List<ItemResponseDTO>> buscarItems(
+            @RequestParam(required = false) String titulo,
             @RequestParam(required = false) String tipo,
-            @RequestParam(required = false) String ubicacion) {
-        List<Item> items = itemService.buscarItems(titulo, tipo, ubicacion);
+            @RequestParam(required = false) String ubicacion,
+            @RequestParam(required = false, defaultValue = "titulo") String ordenarPor) {
+
+        List<ItemResponseDTO> items = itemService.buscarItems(titulo, tipo, ubicacion, ordenarPor);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    /**
+     * Actualiza un ítem existente.
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Item> actualizarItem(@PathVariable Long id, @Valid @RequestBody Item itemDetails) {
-        Item updatedItem = itemService.actualizarItem(id, itemDetails);
-        if (updatedItem == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<ItemResponseDTO> actualizarItem(@PathVariable Long id, @Valid @RequestBody ItemDTO itemDTO) {
+        ItemResponseDTO updatedItem = itemService.actualizarItem(id, itemDTO);
         return new ResponseEntity<>(updatedItem, HttpStatus.OK);
     }
 
+    /**
+     * Elimina un ítem por ID.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarItem(@PathVariable Long id) {
         itemService.eliminarItem(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }
