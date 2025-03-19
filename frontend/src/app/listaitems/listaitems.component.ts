@@ -1,38 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-
-import { ItemRestService } from '../item-rest.service';
+import { Component } from '@angular/core';
 import { Item } from '../item';
-import { Prestamo } from '../prestamo';
+import { ItemRestService } from '../item-rest.service';
 import { Tipo } from '../tipo';
+import { Prestamo } from '../prestamo';
 
 @Component({
   selector: 'app-listaitems',
   imports: [],
   templateUrl: './listaitems.component.html',
-  styleUrls: ['./listaitems.component.css']
+  styleUrl: './listaitems.component.css'
 })
-export class ItemComponent implements OnInit {
-
-  items: Item[] = [];  // Almacenará la lista de ítems
-  item: Item = { } as Item  // Formulario para crear un ítem
-  mensaje: string = '';  // Mensaje para mostrar al usuario
-  tituloBusqueda: string = '';  // Filtro de búsqueda por título
-  tipoBusqueda: string = '';  // Filtro de búsqueda por tipo
-  ubicacionBusqueda: string = '';  // Filtro de búsqueda por ubicación
+export class ListaitemsComponent {
+  items: Item[] = [];
+  item: Item = { } as Item
+  mensaje: string = '';
+  tituloBusqueda: string = '';
+  tipoBusqueda: string = '';
+  ubicacionBusqueda: string = '';
 
   constructor(private itemService: ItemRestService) { }
 
   ngOnInit(): void {
-    this.listarItems();  // Cargar los ítems cuando se inicialice el componente
+    this.listarItems();
   }
 
-  // Método para crear un nuevo ítem
+
   crearItem(): void {
     this.itemService.crearItem(this.item).subscribe(
       (response: any) => {
         this.mensaje = 'Item creado exitosamente!';
         console.log(response);
-        this.listarItems();  // Actualizar la lista después de crear el ítem
+        this.listarItems();
       },
       (error: any) => {
         this.mensaje = 'Error al crear el item';
@@ -41,7 +39,7 @@ export class ItemComponent implements OnInit {
     );
   }
 
-  // Método para listar los ítems disponibles
+
   listarItems(): void {
     this.itemService.listarItemsDisponibles().subscribe(
       (response:any) => {
@@ -53,7 +51,7 @@ export class ItemComponent implements OnInit {
     );
   }
 
-  // Método para buscar ítems con filtros
+
   buscarItems(): void {
     this.itemService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
       (response:any) => {
@@ -65,28 +63,36 @@ export class ItemComponent implements OnInit {
     );
   }
 
-  // Método para actualizar un ítem
-  actualizarItem(id: number): void {
-    const itemToUpdate: Item = new Item{titulo: string, ubicacion: string, estado: boolean, tipo: Tipo, prestamo: Prestamo}; // Ejemplo de datos para actualización
+
+  ctualizarItem(id: number): void {
+
+    const itemToUpdate: Item = {
+      id: id,
+      titulo: 'Nuevo Titulo',
+      ubicacion: 'Nueva Ubicacion',
+      estado: true,
+      tipo: new Tipo(id,'','',[]),
+      prestamo: new Prestamo(id,'',fechaDate,'','',true,[]),
+    };
+  
     this.itemService.actualizarItem(id, itemToUpdate).subscribe(
-      (response:any) => {
+      (response: any) => {
         this.mensaje = 'Item actualizado exitosamente!';
         console.log(response);
-        this.listarItems();  // Actualizar la lista después de actualizar el ítem
+        this.listarItems();
       },
-      (error:any) => {
+      (error: any) => {
         this.mensaje = 'Error al actualizar el item';
         console.error(error);
       }
     );
   }
 
-  // Método para eliminar un ítem
   eliminarItem(id: number): void {
     this.itemService.eliminarItem(id).subscribe(
       () => {
         this.mensaje = 'Item eliminado exitosamente!';
-        this.listarItems();  // Actualizar la lista después de eliminar el ítem
+        this.listarItems();
       },
       (error:any) => {
         this.mensaje = 'Error al eliminar el item';
@@ -95,4 +101,3 @@ export class ItemComponent implements OnInit {
     );
   }
 }
-

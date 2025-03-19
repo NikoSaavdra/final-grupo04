@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ItemComponent } from './listaitems/listaitems.component';
+
 import { RouterOutlet } from '@angular/router';
+import { ListaitemsComponent } from './listaitems/listaitems.component';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,AppComponent,ItemComponent],
+  imports: [RouterOutlet,ListaitemsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
