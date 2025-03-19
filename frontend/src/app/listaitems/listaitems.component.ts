@@ -25,7 +25,7 @@ export class ListaitemsComponent {
     this.listarItems();
   }
 
-
+//metodo a componente formularioitem
   crearItem(): void {
     this.itemService.crearItem(this.item).subscribe(
       (response: any) => {
