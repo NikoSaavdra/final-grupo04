@@ -3,10 +3,11 @@ import { Item } from '../item';
 import { ItemRestService } from '../item-rest.service';
 import { Tipo } from '../tipo';
 import { Prestamo } from '../prestamo';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-listaitems',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './listaitems.component.html',
   styleUrl: './listaitems.component.css'
 })
