@@ -56,7 +56,7 @@ public class Tipo {
         this.nombre = nombre;
     }
 
-    public List<Formato> getFormatos() {
+    public List<Formato> getFormato() {
         return formatos;
     }
 
