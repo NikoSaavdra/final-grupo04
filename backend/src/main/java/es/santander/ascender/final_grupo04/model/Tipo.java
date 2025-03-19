@@ -22,7 +22,8 @@ public class Tipo {
     @NotNull
     private String nombre;
 
-    private String formato;
+    @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Formato> formatos;
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL)
@@ -31,10 +32,10 @@ public class Tipo {
     public Tipo() {
     }
 
-    public Tipo(Long id, String nombre, String formato, List<Item> items) {
+    public Tipo(Long id, String nombre, List<Formato> formatos, List<Item> items) {
         this.id = id;
         this.nombre = nombre;
-        this.formato = formato;
+        this.formatos = formatos;
         this.items = items;
     }
 
@@ -54,12 +55,12 @@ public class Tipo {
         this.nombre = nombre;
     }
 
-    public String getFormato() {
-        return formato;
+    public List<Formato> getFormatos() {
+        return formatos;
     }
 
-    public void setFormato(String formato) {
-        this.formato = formato;
+    public void setFormato(List<Formato> formatos) {
+        this.formatos = formatos;
     }
 
     public List<Item> getItems() {
