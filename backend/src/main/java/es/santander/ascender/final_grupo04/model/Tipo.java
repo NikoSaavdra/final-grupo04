@@ -16,14 +16,15 @@ import jakarta.validation.constraints.NotNull;
 public class Tipo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     private String nombre;
 
-    @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Formato> formatos;
+    @OneToMany(mappedBy = "tipo")
+     private List<Formato> formatos;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL)

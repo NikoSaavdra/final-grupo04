@@ -1,5 +1,7 @@
 package es.santander.ascender.final_grupo04.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,15 +14,17 @@ import jakarta.validation.constraints.NotNull;
 public class Formato {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private Long id;
 
     @NotNull
     private String nombre;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "tipo_id")
-    private Tipo tipo;
+     private Tipo tipo;
+
 
     public Long getId() {
         return id;
