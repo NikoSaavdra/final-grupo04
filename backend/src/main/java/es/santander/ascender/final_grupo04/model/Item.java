@@ -1,5 +1,7 @@
 package es.santander.ascender.final_grupo04.model;
 
+import java.time.LocalDate;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,6 +27,8 @@ public class Item {
 
     private String ubicacion;
 
+    private LocalDate FechaADquisicion;
+
     private boolean estado = true; // Por defecto, los ítems son "Disponibles"
 
     @ManyToOne
@@ -39,10 +43,11 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String titulo, String ubicacion, boolean estado, Tipo tipo, Prestamo prestamo) {
+    public Item(Long id, String titulo, String ubicacion, LocalDate fechaAdquisicion, boolean estado, Tipo tipo, Prestamo prestamo) {
         this.id = id;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
+        this.FechaADquisicion = fechaAdquisicion;
         this.estado = estado;
         this.tipo = tipo;
         this.prestamo = prestamo;
@@ -95,4 +100,14 @@ public class Item {
     public void setPrestamo(Prestamo prestamo) {
         this.prestamo = prestamo;
     }
+
+    public LocalDate getFechaADquisicion() {
+        return FechaADquisicion;
+    }
+
+    public void setFechaADquisicion(LocalDate fechaADquisicion) {
+        FechaADquisicion = fechaADquisicion;
+    }
+
+    
 }

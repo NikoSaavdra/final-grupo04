@@ -1,5 +1,6 @@
 package es.santander.ascender.final_grupo04.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class ItemService {
 
     public Item crearItem(Item item) {
         item.setEstado(true);
+        item.setFechaADquisicion(LocalDate.now());
         return itemRepository.save(item);
     }
 
