@@ -35,6 +35,10 @@ public class Item {
     @JoinColumn(name = "tipo_id", nullable = false)
     private Tipo tipo;
 
+    @ManyToOne
+    @JoinColumn(name = "formato_id", nullable = false)  // Nueva relación con Formato
+    private Formato formato;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "prestamo_id")
@@ -43,13 +47,14 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String titulo, String ubicacion, LocalDate fechaAdquisicion, boolean estado, Tipo tipo, Prestamo prestamo) {
+    public Item(Long id, String titulo, String ubicacion, LocalDate fechaAdquisicion, boolean estado, Tipo tipo, Formato formato, Prestamo prestamo) {
         this.id = id;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.FechaADquisicion = fechaAdquisicion;
         this.estado = estado;
         this.tipo = tipo;
+        this.formato = formato;
         this.prestamo = prestamo;
     }
 
@@ -99,6 +104,15 @@ public class Item {
 
     public void setPrestamo(Prestamo prestamo) {
         this.prestamo = prestamo;
+    }
+
+
+    public Formato getFormato() {
+        return formato;
+    }
+
+    public void setFormato(Formato formato) {
+        this.formato = formato;
     }
 
     public LocalDate getFechaADquisicion() {

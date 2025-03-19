@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+// import es.santander.ascender.final_grupo04.model.Formato;
 import es.santander.ascender.final_grupo04.model.Item;
+// import es.santander.ascender.final_grupo04.service.FormatoService;
 import es.santander.ascender.final_grupo04.service.ItemService;
 import jakarta.validation.Valid;
 
@@ -25,6 +27,20 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+
+    // @Autowired
+    // private FormatoService formatoService;
+
+    @Autowired
+
+
+
+    // // Endpoint para obtener los formatos asociados a un tipo
+    // @GetMapping("/formatos/{tipo_id}")
+    // public ResponseEntity<List<Formato>> obtenerFormatosPorTipo( Long tipo_id) {
+    //     List<Formato> formatos = formatoService.obtenerFormatosPorTipo(tipo_id);
+    //     return ResponseEntity.ok(formatos);
+    // }
 
     @PostMapping
     public ResponseEntity<Item> crearItem(@Valid @RequestBody Item item) {

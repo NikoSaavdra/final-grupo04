@@ -1,0 +1,29 @@
+// package es.santander.ascender.final_grupo04.service;
+
+// import java.util.List;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
+
+// import es.santander.ascender.final_grupo04.model.Formato;
+// import es.santander.ascender.final_grupo04.repository.FormatoRepository;
+
+// @Service
+// public class FormatoService {
+
+    
+
+//     @Autowired
+//     private FormatoRepository formatoRepository;
+
+//     // Obtener los formatos asociados a un tipo
+//     public List<Formato> obtenerFormatosPorTipo(Long tipo_id) {
+//         return formatoRepository.findByTipoId(tipo_id);
+//     }
+// }
+
+
+
+
+
+//FormatoService en el caso de que haga falta
