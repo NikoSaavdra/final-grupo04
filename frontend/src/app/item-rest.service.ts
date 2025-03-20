@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Item } from './item';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,13 @@ export class ItemRestService {
   constructor(private http: HttpClient) { }
 
   listarItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.apiUrl);
+    return this.http.get<Item[]>(this.apiUrl).pipe(
+      map(items => {
+        return items.map(item => ({
+          ...item,
+          disponible: item.estado ? 'Disponible' : '' ,}));
+      })
+    )
   }
 
   public crearItem(item: Item): Observable<Item> {

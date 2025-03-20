@@ -7,31 +7,34 @@
     <title>INICIO</title>
 
     <style>
-        html,body {
+        html,
+        body {
             background-color: rgb(233, 226, 209);
             margin: 0;
-            /* Eliminamos los márgenes por defecto */
             padding: 0;
-            /* Eliminamos el padding por defecto */
-            height: 100vh;
-            /* Fondo ocupa el 100% de la altura de la ventana */
+            height: 100%;
             width: 100%;
-            /* Fondo ocupa el 100% del ancho */
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
             display: flex;
-            /* Usamos flexbox para centrar el contenido */
-            justify-content: center;
-            /* Centrado horizontal */
-            box-sizing: border-box;
-            /* Para que el padding no afecte el tamaño total */
+            flex-direction: column;
+            /* Cambiamos la dirección a columna */
+            justify-content: flex-start;
+            /* Alinea el contenido al inicio */
+            align-items: center;
+            /* Alinea los elementos en el centro horizontalmente */
+            height: 100vh;
+            padding: 20px;
         }
 
         .h2 {
-            justify-content: center;
             font-family: Tahoma;
             font-size: 2rem;
-            /* Tamaño de la fuente */
             color: #333;
-            /* Color del texto */
+            margin-bottom: 20px;
+            /* Espacio debajo del título */
         }
 
         body {
@@ -43,13 +46,39 @@
             margin: 0;
         }
 
+        .search-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .search-bar select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 2px solid #ccc;
+            background-color: #fff;
+            cursor: pointer;
+
+        }
+
         .table-container {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             width: 80%;
-            max-width: 900px;
+            max-width: 1100px;
         }
 
         table {
@@ -95,13 +124,26 @@
         }
     </style>
 </head>
+
+
 <div class="row justify-content-md-center">
     <p class="h2">MI COLECCIÓN</p>
 </div>
 
 <body>
 
+    <div class="search-bar">
+        <input type="text" placeholder="Buscar libro, película o Cd...">
+        <select>
+            <option value="todos">Filtro</option>
+            <option value="libros">Libros</option>
+            <option value="peliculas">Películas</option>
+            <option value="cd">CD</option>
+        </select>
+    </div>
     <br />
+
+
     <div class="table-container">
         <!-- Tabla de ordenadores -->
 
@@ -111,11 +153,12 @@
                     <th class="col"></th>
                     <th class="col">Id</th>
                     <th class="col">Título</th>
+                    <th class="col">Fecha Adquisición</th>
                     <th class="col">Ubicación</th>
                     <th class="col">Estado</th>
                     <th class="col">Tipo</th>
                     <th class="col">Formato</th>
-                    <th class="col">Préstamo</th>
+                    <th class="col">Ver Préstamo</th>
                     <th class="col">🗑️</th>
                 </tr>
             </thead>
@@ -125,12 +168,13 @@
                     <td><img src="icono_libro.png" class="img-fluid" alt="libro" width="30%"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
+                    <td>{{ item.fechaadquisicion}}</td>
                     <td>{{ item.ubicacion }}</td>
-                    <td>{{ item.estado }}</td>
+                    <td>{{ item.estado || 'No disponible' }}</td>
                     <td>{{ item.tipo }}</td>
                     <td>{{ item.formato}}</td>
-                    <td>{{ item.prestamo }}</td>
-                    <td><button class="button"(click)="borrar(item.id)">Borrar</button></td>
+                    <td><button class="button" routerLink="/listaprestamos">Ver Préstamos</button></td>
+                    <td><button class="button" (click)="borrar(item.id)">Borrar</button></td>
 
                 </tr>
                 }
