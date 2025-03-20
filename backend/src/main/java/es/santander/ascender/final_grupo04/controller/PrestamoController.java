@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.santander.ascender.final_grupo04.DTO.PrestamoResponseDTO;
-import es.santander.ascender.final_grupo04.model.Prestamo;
 import es.santander.ascender.final_grupo04.service.PrestamoService;
 
 @RestController
