@@ -38,7 +38,7 @@ export class PrestamoRestService {
   }
 
 
-  istarPrestamosActivos(persona?: string, fecha?: string): Observable<Prestamo[]> {
+  listarPrestamosActivos(persona?: string, fecha?: string): Observable<Prestamo[]> {
     let params = new HttpParams();
 
     // Si se proporciona el parámetro 'persona', lo agregamos a los parámetros
