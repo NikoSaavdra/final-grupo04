@@ -114,6 +114,7 @@
                     <th class="col">Ubicación</th>
                     <th class="col">Estado</th>
                     <th class="col">Tipo</th>
+                    <th class="col">Formato</th>
                     <th class="col">Préstamo</th>
                     <th class="col">🗑️</th>
                 </tr>
@@ -127,6 +128,7 @@
                     <td>{{ item.ubicacion }}</td>
                     <td>{{ item.estado }}</td>
                     <td>{{ item.tipo }}</td>
+                    <td>{{ item.formato}}</td>
                     <td>{{ item.prestamo }}</td>
                     <td><button class="button"(click)="borrar(item.id)">Borrar</button></td>
 
@@ -136,4 +138,4 @@
         </table>
     </div>
 
-    <button class="button" routerLink="/formularioitem">Insetar Nuevo Artículo</button>
+    <button class="button" routerLink="/formularioitem">Insertar Nuevo Artículo</button>
