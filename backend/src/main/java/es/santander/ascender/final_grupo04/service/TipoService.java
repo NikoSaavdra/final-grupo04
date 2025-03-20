@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.santander.ascender.final_grupo04.DTO.TipoDTO;
 import es.santander.ascender.final_grupo04.model.Formato;
 import es.santander.ascender.final_grupo04.model.Tipo;
+import es.santander.ascender.final_grupo04.repository.FormatoRepository;
 import es.santander.ascender.final_grupo04.repository.TipoRepository;
 
 @Transactional
@@ -19,10 +21,26 @@ public class TipoService {
     @Autowired
     private TipoRepository tipoRepository;
 
+    @Autowired
+    private FormatoRepository formatoRepository;
+
     @Transactional
-    public Tipo crearTipo(Tipo tipo) {
-        return tipoRepository.save(tipo);
-    }
+    public Tipo crearTipo(TipoDTO tipoDTO) {
+    // Recuperamos los formatos por sus IDs
+    List<Formato> formatosExistentes = tipoDTO.getFormatoIds().stream()
+        .map(id -> formatoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Formato con ID " + id + " no encontrado")))
+        .collect(Collectors.toList());
+
+    // Creamos el nuevo tipo
+    Tipo tipo = new Tipo();
+    tipo.setNombre(tipoDTO.getNombre());  // Asignamos el nombre desde el DTO
+    tipo.setFormato(formatosExistentes);  // Asociamos los formatos al tipo
+
+    // Guardamos el nuevo tipo con los formatos asociados
+    return tipoRepository.save(tipo);
+}
+
 
     @Transactional(readOnly = true)
     public List<Tipo> listarTipos() {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.santander.ascender.final_grupo04.DTO.TipoDTO;
 import es.santander.ascender.final_grupo04.model.Tipo;
 import es.santander.ascender.final_grupo04.service.TipoService;
 import jakarta.validation.Valid;
@@ -26,10 +27,16 @@ public class TipoController {
     private TipoService tipoService;
 
     @PostMapping
-    public ResponseEntity<Tipo> crearTipo(@Valid @RequestBody Tipo tipo) {
-        Tipo createdTipo = tipoService.crearTipo(tipo);
-        return new ResponseEntity<>(createdTipo, HttpStatus.CREATED);
+    public ResponseEntity<Tipo> crearTipo(@RequestBody TipoDTO tipoDTO) {
+        try {
+            // Llamamos al servicio para crear el tipo con los formatos asociados
+            Tipo tipo = tipoService.crearTipo(tipoDTO);
+            return new ResponseEntity<>(tipo, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     @GetMapping
     public ResponseEntity<List<Tipo>> listarTipos() {
