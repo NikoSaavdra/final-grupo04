@@ -17,7 +17,7 @@ export class ItemRestService {
   }
 
   public crearItem(item: Item): Observable<Item> {
-    return this.http.post<Item>("http://localhost:8080/api/items", item)
+    return this.http.post<Item>(this.apiUrl, item)
   }
 
 

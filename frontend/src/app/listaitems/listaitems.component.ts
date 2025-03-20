@@ -24,6 +24,14 @@ export class ListaitemsComponent {
     })
   }
 
+  borrar(id: number){
+    this.itemRestService.eliminarItem(id).subscribe(()=>{
+      this.itemRestService.buscarItems().subscribe((datos)=>{
+        this.listaItems=datos;
+      })
+    })
+  }
+
   buscarItems(): void {
     this.itemRestService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
       (response: any) => {

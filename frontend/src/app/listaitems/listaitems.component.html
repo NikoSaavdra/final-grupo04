@@ -1,41 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INICIO</title>
 
     <style>
-        html {
+        html,body {
             background-color: rgb(233, 226, 209);
-            margin: 0; /* Eliminamos los márgenes por defecto */
-            padding: 0; /* Eliminamos el padding por defecto */
-            height: 100vh; /* Fondo ocupa el 100% de la altura de la ventana */
-            width: 100%; /* Fondo ocupa el 100% del ancho */
-            display: flex; /* Usamos flexbox para centrar el contenido */
-            justify-content: center; /* Centrado horizontal */
-            box-sizing: border-box; /* Para que el padding no afecte el tamaño total */
+            margin: 0;
+            /* Eliminamos los márgenes por defecto */
+            padding: 0;
+            /* Eliminamos el padding por defecto */
+            height: 100vh;
+            /* Fondo ocupa el 100% de la altura de la ventana */
+            width: 100%;
+            /* Fondo ocupa el 100% del ancho */
+            display: flex;
+            /* Usamos flexbox para centrar el contenido */
+            justify-content: center;
+            /* Centrado horizontal */
+            box-sizing: border-box;
+            /* Para que el padding no afecte el tamaño total */
         }
+
         .h2 {
             justify-content: center;
-            font-family:Tahoma;
-            font-size: 2rem; /* Tamaño de la fuente */
-            color: #333; /* Color del texto */
+            font-family: Tahoma;
+            font-size: 2rem;
+            /* Tamaño de la fuente */
+            color: #333;
+            /* Color del texto */
         }
 
-        table{
-
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        </style>
+
+        .table-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 80%;
+            max-width: 900px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f6a53b;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #d1e7fd;
+        }
+
+        td {
+            color: #333;
+        }
+
+        /* Bordes suaves */
+        th,
+        td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #f6a53b;
+            border-collapse: collapse;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+    </style>
 </head>
 <div class="row justify-content-md-center">
-<p class="h2">MI COLECCIÓN</p>
+    <p class="h2">MI COLECCIÓN</p>
 </div>
+
 <body>
-    
-    <br/>
-    <div class="container">
-    <div class="row justify-content-md-center">
+
+    <br />
+    <div class="table-container">
         <!-- Tabla de ordenadores -->
 
         <table class="table">
@@ -48,22 +115,25 @@
                     <th class="col">Estado</th>
                     <th class="col">Tipo</th>
                     <th class="col">Préstamo</th>
+                    <th class="col">🗑️</th>
                 </tr>
             </thead>
             <tbody>
                 @for(item of listaItems ;track item.id){
                 <tr>
-                    <td><img src="icono_libro.png" class="img-fluid" alt="libro"></td>
+                    <td><img src="icono_libro.png" class="img-fluid" alt="libro" width="30%"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
                     <td>{{ item.ubicacion }}</td>
                     <td>{{ item.estado }}</td>
                     <td>{{ item.tipo }}</td>
                     <td>{{ item.prestamo }}</td>
-                    
+                    <td><button class="button"(click)="borrar(item.id)">Borrar</button></td>
+
                 </tr>
-            }
+                }
             </tbody>
         </table>
+    </div>
 
-        <button class="btn btn-warning" routerLink="/formularioitem">Insetar Nuevo Artículo</button>
+    <button class="button" routerLink="/formularioitem">Insetar Nuevo Artículo</button>

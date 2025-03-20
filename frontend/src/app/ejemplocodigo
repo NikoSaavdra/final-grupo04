@@ -1,4 +1,0 @@
-
-
-listaItems en listaitems.html:
-@for(item of listaItems ;track item.id){
