@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { Item } from '../item';
 import { ItemRestService } from '../item-rest.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-formularioitem',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './formularioitem.component.html',
   styleUrl: './formularioitem.component.css'
 })
