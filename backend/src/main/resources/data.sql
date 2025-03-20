@@ -1,18 +1,29 @@
+-- Inserción de los tipos sin IDs
+INSERT INTO tipo (nombre) VALUES ('Música');
+INSERT INTO tipo (nombre) VALUES ('Libro');
+INSERT INTO tipo (nombre) VALUES ('Película');
 
-INSERT INTO tipo (id, nombre) VALUES (1, 'Música');
-INSERT INTO tipo (id, nombre) VALUES (2, 'Libro');
-INSERT INTO tipo (id, nombre) VALUES (3, 'Película');
 
 -- Inserción de los formatos
-INSERT INTO formato (nombre, tipo_id) VALUES ('CD', 1);
-INSERT INTO formato (nombre, tipo_id) VALUES ('Vinilo', 1);
-INSERT INTO formato (nombre, tipo_id) VALUES ('Digital', 1);
+INSERT INTO formato (id, nombre) VALUES (1, 'CD');
+INSERT INTO formato (id, nombre) VALUES (2, 'Vinilo');
+INSERT INTO formato (id, nombre) VALUES (3, 'Digital');
+INSERT INTO formato (id, nombre) VALUES (4, 'Papel');
+INSERT INTO formato (id, nombre) VALUES (5, 'PDF');
+INSERT INTO formato (id, nombre) VALUES (6, 'Blu-ray');
+INSERT INTO formato (id, nombre) VALUES (7, 'DVD');
 
-INSERT INTO formato (nombre, tipo_id) VALUES ('Papel', 2);
-INSERT INTO formato (nombre, tipo_id) VALUES ('PDF', 2);
+-- Asociaciones en la tabla intermedia
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (1, 1); -- Música -> CD
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (1, 2); -- Música -> Vinilo
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (1, 3); -- Música -> Digital
 
-INSERT INTO formato (nombre, tipo_id) VALUES ('Blu-ray', 3);
-INSERT INTO formato (nombre, tipo_id) VALUES ('DVD', 3);
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (2, 4); -- Libro -> Papel
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (2, 5); -- Libro -> PDF
+
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (3, 6); -- Película -> Blu-ray
+INSERT INTO tipo_formato (tipo_id, formato_id) VALUES (3, 7); -- Película -> DVD
+
 
 
 -- Inserción de un item de tipo "Música" (con formato CD)

@@ -9,6 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,7 +25,12 @@ public class Tipo {
     @NotNull
     private String nombre;
 
-    @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "tipo_formato",
+            joinColumns = @JoinColumn(name = "tipo_id"),
+            inverseJoinColumns = @JoinColumn(name = "formato_id")
+    )
     private List<Formato> formatos;
 
     @JsonIgnore

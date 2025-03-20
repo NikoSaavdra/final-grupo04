@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.santander.ascender.final_grupo04.DTO.TipoDTO;
+import es.santander.ascender.final_grupo04.DTO.TipoFormatoDTO;
 import es.santander.ascender.final_grupo04.model.Formato;
 import es.santander.ascender.final_grupo04.model.Tipo;
 import es.santander.ascender.final_grupo04.repository.FormatoRepository;
@@ -25,26 +26,48 @@ public class TipoService {
     private FormatoRepository formatoRepository;
 
     @Transactional
-    public Tipo crearTipo(TipoDTO tipoDTO) {
-    // Recuperamos los formatos por sus IDs
-    List<Formato> formatosExistentes = tipoDTO.getFormatoIds().stream()
-        .map(id -> formatoRepository.findById(id)
+    public TipoDTO crearTipo(TipoDTO tipoDTO) {
+        // Verificar si ya existe un tipo con el mismo nombre
+        if (tipoRepository.findByNombre(tipoDTO.getNombre()).isPresent()) {
+            throw new RuntimeException("El tipo con el nombre '" + tipoDTO.getNombre() + "' ya existe.");
+        }
+        // Crear el nuevo tipo
+        Tipo tipo = new Tipo();
+        tipo.setNombre(tipoDTO.getNombre());
+
+        // Recuperar los formatos por sus IDs
+        List<Formato> formatos = tipoDTO.getFormatoIds().stream()
+                .map(id -> formatoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Formato con ID " + id + " no encontrado")))
-        .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
-    // Creamos el nuevo tipo
-    Tipo tipo = new Tipo();
-    tipo.setNombre(tipoDTO.getNombre());  // Asignamos el nombre desde el DTO
-    tipo.setFormato(formatosExistentes);  // Asociamos los formatos al tipo
+        // Asociar los formatos al tipo
+        tipo.setFormato(formatos);
 
-    // Guardamos el nuevo tipo con los formatos asociados
-    return tipoRepository.save(tipo);
-}
+        // Guardar el tipo
+        Tipo savedTipo = tipoRepository.save(tipo);
 
+        // Construir el DTO de respuesta
+        TipoDTO responseDTO = new TipoDTO();
+        responseDTO.setNombre(savedTipo.getNombre());
+        responseDTO.setFormatoIds(
+                savedTipo.getFormato().stream().map(Formato::getId).collect(Collectors.toList())
+        );
+
+        return responseDTO;
+    }
 
     @Transactional(readOnly = true)
-    public List<Tipo> listarTipos() {
-        return tipoRepository.findAll();
+    public List<TipoFormatoDTO> listarTipos() {
+        return tipoRepository.findAll().stream()
+                .map(tipo -> new TipoFormatoDTO(
+                tipo.getId(),
+                tipo.getNombre(),
+                tipo.getFormato().stream()
+                        .map(Formato::getNombre) // Extrae solo los nombres de los formatos
+                        .collect(Collectors.toList())
+        ))
+                .collect(Collectors.toList());
     }
 
     @Transactional

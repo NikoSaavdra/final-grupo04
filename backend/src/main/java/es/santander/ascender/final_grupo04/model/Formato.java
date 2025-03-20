@@ -1,31 +1,39 @@
 package es.santander.ascender.final_grupo04.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Formato {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     private String nombre;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "tipo_id")
-     private Tipo tipo;
+    @ManyToMany(mappedBy = "formatos")
+    private List<Tipo> tipos;
 
+    public Formato() {
+    }
 
+    public Formato(Long id, @NotNull String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -42,24 +50,11 @@ public class Formato {
         this.nombre = nombre;
     }
 
-    public Tipo getTipo() {
-        return tipo;
+    public List<Tipo> getTipos() {
+        return tipos;
     }
 
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
+    public void setTipos(List<Tipo> tipos) {
+        this.tipos = tipos;
     }
-    
-    public Formato() {
-    }
-
-    public Formato(Long id, @NotNull String nombre, Tipo tipo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.tipo = tipo;
-    }
-
- 
-
-    
 }
