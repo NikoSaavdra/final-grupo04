@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import jakarta.validation.constraints.NotNull;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -26,7 +27,8 @@ public class Item {
     private String titulo;
 
     private String ubicacion;
-
+    
+    @Column(name = "fecha_adquisicion")
     private LocalDate FechaADquisicion;
 
     private boolean estado = true; // Por defecto, los ítems son "Disponibles"
