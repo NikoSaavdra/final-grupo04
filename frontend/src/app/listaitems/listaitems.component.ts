@@ -1,78 +1,36 @@
 import { Component } from '@angular/core';
 import { Item } from '../item';
 import { ItemRestService } from '../item-rest.service';
-import { Tipo } from '../tipo';
-import { Prestamo } from '../prestamo';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-listaitems',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './listaitems.component.html',
   styleUrl: './listaitems.component.css'
 })
 export class ListaitemsComponent {
-  items: Item[] = [];
+  listaItems: Item[] = [];
   item: Item = { } as Item
-  mensaje: string = '';
   tituloBusqueda: string = '';
   tipoBusqueda: string = '';
   ubicacionBusqueda: string = '';
 
-  constructor(private itemService: ItemRestService) { }
+  constructor(private itemRestService: ItemRestService) {
 
-  ngOnInit(): void {
-    this.listarItems();
+    itemRestService.listarItems().subscribe((datos) => {
+      this.listaItems = datos;
+    })
   }
-
-//metodo a componente formularioitem
-  crearItem(): void {
-    this.itemService.crearItem(this.item).subscribe(
-      (response: any) => {
-        this.mensaje = 'Item creado exitosamente!';
-        console.log(response);
-        this.listarItems();
-      },
-      (error: any) => {
-        this.mensaje = 'Error al crear el item';
-        console.error(error);
-      }
-    );
-  }
-
-
-  listarItems(): void {
-    this.itemService.listarItemsDisponibles().subscribe(
-      (response:any) => {
-        this.items = response;
-      },
-      (error:any) => {
-        console.error('Error al listar los ítems', error);
-      }
-    );
-  }
-
 
   buscarItems(): void {
-    this.itemService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
-      (response:any) => {
-        this.items = response;
+    this.itemRestService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
+      (response: any) => {
+        this.item = response;
       },
-      (error:any) => {
+      (error: any) => {
         console.error('Error al buscar ítems', error);
-      }
-    );
-  }
-
-  eliminarItem(id: number): void {
-    this.itemService.eliminarItem(id).subscribe(
-      () => {
-        this.mensaje = 'Item eliminado exitosamente!';
-        this.listarItems();
-      },
-      (error:any) => {
-        this.mensaje = 'Error al eliminar el item';
-        console.error(error);
       }
     );
   }

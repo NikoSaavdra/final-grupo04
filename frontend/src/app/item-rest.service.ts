@@ -8,25 +8,18 @@ import { Observable } from 'rxjs';
 })
 export class ItemRestService {
 
-  private apiUrl = 'http://localhost:8080/api/items';
+  private apiUrl = "http://localhost:4200/api/item";
 
-  constructor(private httpClient:HttpClient) { }
-  
-  crearItem(item:Item):Observable<Item>{
-    return this.httpClient.post<Item>(this.apiUrl, item, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    });
+  constructor(private http: HttpClient) { }
+
+  listarItems(): Observable<Item[]> {
+    return this.http.get<Item[]>(this.apiUrl);
   }
 
-  listarItemsDisponibles(): Observable<Item[]> {
-    return this.httpClient.get<Item[]>(this.apiUrl, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    });
+  public crearItem(item: Item): Observable<Item> {
+    return this.http.post<Item>("http://localhost:8080/api/items", item)
   }
+
 
   buscarItems(titulo?: string, tipo?: string, ubicacion?: string): Observable<Item[]> {
     let params = new HttpParams();
@@ -43,14 +36,14 @@ export class ItemRestService {
     }
 
     // Realizamos la solicitud GET con los parámetros
-    return this.httpClient.get<Item[]>(this.apiUrl, { params: params });
+    return this.http.get<Item[]>(this.apiUrl, { params: params });
   }
 
   actualizarItem(id: number, itemDetails: Item): Observable<Item> {
     const url = `${this.apiUrl}/${id}`; // Construimos la URL con el id del item
 
     // Realizamos la solicitud PUT con el id y el cuerpo del item a actualizar
-    return this.httpClient.put<Item>(url, itemDetails, {
+    return this.http.put<Item>(url, itemDetails, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
@@ -62,7 +55,7 @@ export class ItemRestService {
     const url = `${this.apiUrl}/${id}`; // Construimos la URL con el id del item
 
     // Realizamos la solicitud DELETE con el id del item
-    return this.httpClient.delete<void>(url, {
+    return this.http.delete<void>(url, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),

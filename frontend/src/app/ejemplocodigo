@@ -1,10 +1,4 @@
-listarItems en listaitems.ts:
 
-constructor(private ItemRestService: ItemRestService){
-ItemRestService.listaitems().subscribe((datos)=>{
-    this.listarItems=datos;
-})
-}
 
 listaItems en listaitems.html:
 @for(item of listaItems ;track item.id){
