@@ -8,4 +8,6 @@ export class Tipo {
         public formato:string,
         public items:Item[],
     ){}
+
+    
 }

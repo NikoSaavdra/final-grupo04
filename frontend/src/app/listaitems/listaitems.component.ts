@@ -3,10 +3,11 @@ import { Item } from '../item';
 import { ItemRestService } from '../item-rest.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-listaitems',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink,FormsModule],
   templateUrl: './listaitems.component.html',
   styleUrl: './listaitems.component.css'
 })
@@ -16,6 +17,7 @@ export class ListaitemsComponent {
   tituloBusqueda: string = '';
   tipoBusqueda: string = '';
   ubicacionBusqueda: string = '';
+  
 
   constructor(private itemRestService: ItemRestService) {
 
@@ -32,10 +34,16 @@ export class ListaitemsComponent {
     })
   }
 
-  buscarItems(): void {
+  buscar(): void {
+
+    const filtroTitulo = this.tituloBusqueda ? this.tituloBusqueda : '';
+    const filtroTipo = this.tipoBusqueda ? this.tipoBusqueda : '';
+    const filtroUbicacion = this.ubicacionBusqueda ? this.ubicacionBusqueda : '';
+    
     this.itemRestService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
       (response: any) => {
-        this.item = response;
+        console.log(response);
+        this.listaItems = response;
       },
       (error: any) => {
         console.error('Error al buscar ítems', error);

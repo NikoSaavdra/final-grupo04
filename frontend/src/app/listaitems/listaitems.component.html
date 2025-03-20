@@ -133,13 +133,15 @@
 <body>
 
     <div class="search-bar">
-        <input type="text" placeholder="Buscar libro, película o Cd...">
-        <select>
-            <option value="todos">Filtro</option>
-            <option value="libros">Libros</option>
-            <option value="peliculas">Películas</option>
+        <input [(ngModel)]="tituloBusqueda" type="text" placeholder="Buscar libro, película o Cd...">
+        <select [(ngModel)]="tipoBusqueda">
+            <option value="">Todos</option>
+            <option value="libros">Libro</option>
+            <option value="peliculas">Película</option>
             <option value="cd">CD</option>
         </select>
+        <input [(ngModel)]="ubicacionBusqueda" placeholder="Buscar por ubicación" />
+        <button class="button" (click)="buscar()">Buscar</button>
     </div>
     <br />
 
@@ -164,7 +166,8 @@
             <tbody>
                 @for(item of listaItems ;track item.id){
                 <tr>
-                    <td><img src="icono_libro.png" class="img-fluid" alt="libro" width="30%"></td>
+                    <td><img 
+                        src="icono_libro.png" class="img-fluid" alt="libro" width="30%"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
                     <td>{{ item.fechaadquisicion}}</td>

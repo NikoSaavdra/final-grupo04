@@ -7,7 +7,7 @@ import { FormularioitemComponent } from './formularioitem/formularioitem.compone
 import { ListaprestamosComponent } from './listaprestamos/listaprestamos.component';
 
 export const routes: Routes = [
-    { path: '', component:InicioComponent},
+  { path: '', component:InicioComponent},
   { path: 'listaitems', component: ListaitemsComponent },
   { path: 'formularioitem', component:FormularioitemComponent },
   { path: 'listaprestamos', component:ListaprestamosComponent },

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PrestamoRestService {
 
-  private apiUrl = 'http://localhost:8080/api/prestamos';
+  private apiUrl = "http://localhost:4200/api/prestamo";
 
   constructor(private httpClient:HttpClient) { }
 
