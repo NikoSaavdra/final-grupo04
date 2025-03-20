@@ -16,6 +16,7 @@
             justify-content: center; /* Centrado horizontal */
             align-items: center; /* Centrado vertical */
             box-sizing: border-box; /* Para que el padding no afecte el tamaño total */
+        }
 
     </style>
 </head>
@@ -23,22 +24,22 @@
     <body>
       <form>
     <div class="id">
-        <label for="id" class="form-label text-primary">id</label>
+        <label for="id" class="form-label text-primary">Id</label>
         <input type="number" class="form-control" id="id" name="id" [(ngModel)]="item.id" placeholder="Introduce el id" required>
     </div>
 
     <div class="titulo">
-        <label for="titulo" class="form-label text-primary">titulo</label>
+        <label for="titulo" class="form-label text-primary">Título</label>
         <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="item.titulo" placeholder="Introduce el titulo" required>
     </div>
 
     <div class="ubicación">
-        <label for="ubicación" class="form-label text-primary">ubicación</label>
-        <input type="text" class="form-check-input" id="ubicación" name="ubicación" [(ngModel)]="item.ubicación">
+        <label for="ubicacion" class="form-label text-primary">Ubicación</label>
+        <input type="text" class="form-check-input" id="ubicacion" name="ubicacion" [(ngModel)]="item.ubicacion">
     </div>
 
     <div class="fechaadquisicion">
-        <label for="fechaadquisicion" class="form-label text-primary">fecha de adquisicion </label>
+        <label for="fechaadquisicion" class="form-label text-primary">Fecha de adquisicion </label>
         <input type="date" class="form-check-input" id="fechaadquisicion" name="fechaadquisicion" [(ngModel)]="item.fechaadquisicion">
     </div>
 
@@ -50,12 +51,12 @@
 
 
     <div class="tipo">
-        <label for="tipo" class="form-label text-primary">tipo </label>
+        <label for="tipo" class="form-label text-primary">Tipo </label>
         <input type="select" class="form-check-input" id="tipo" name="tipo" [(ngModel)]="item.tipo">
     </div>
 
     <div class="formato">
-        <label for="formato" class="form-label text-primary">formato </label>
+        <label for="formato" class="form-label text-primary">Formato </label>
         <input type="select" class="form-check-input" id="formato" name="formato" [(ngModel)]="item.formato">
     </div>
 
@@ -66,7 +67,7 @@
 
 
     <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-warning text-white" (click)="insertar()">Guardar</button>
+        <button type="submit" class="btn btn-warning text-white" (click)="crearItem()">Crear Nuevo</button>
     </div>
 
 </form>

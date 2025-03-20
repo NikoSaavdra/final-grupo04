@@ -6,7 +6,7 @@ import { ListaitemsComponent } from './listaitems/listaitems.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,ListaitemsComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
