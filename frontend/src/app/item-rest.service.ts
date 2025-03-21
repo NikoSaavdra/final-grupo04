@@ -15,12 +15,21 @@ export class ItemRestService {
   listarItems(): Observable<Item[]> {
     return this.http.get<Item[]>(this.apiUrl).pipe(
       map(items => {
-        return items.map(item => ({
-          ...item,
-          disponible: item.estado ? 'Disponible' : '' ,}));
+        return items.map(item => {
+          console.log('Estado:', item.estado);  // Depurar qué valor tiene 'estado'
+  
+          // Asegurarse de que el valor sea booleano
+          const estadoBooleano = Boolean(item.estado);
+  
+          return {
+            ...item,
+            disponible: estadoBooleano ? 'Disponible' : ''  // Si es true, 'Disponible', si no es false o cualquier otro valor, cadena vacía
+          };
+        });
       })
-    )
+    );
   }
+  
 
   public crearItem(item: Item): Observable<Item> {
     return this.http.post<Item>(this.apiUrl, item)

@@ -45,6 +45,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .table-container {
             background-color: #fff;
             border-radius: 8px;
@@ -119,22 +120,21 @@
                 </tr>
             </thead>
             <tbody>
-                @for(prestamo of listaPrestamosActivos ;track prestamo.id){
-                <tr>
+                <tr *ngFor="let prestamo of listaPrestamosActivos">
                     <td>{{ prestamo.id }}</td>
                     <td>{{ prestamo.persona }}</td>
-                    <td>{{ prestamo.fechaprestamo}}</td>
-                    <td>{{ prestamo.fechaprevistadevolucion }}</td>
-                    <td>{{ prestamo.fechadevolucion }}</td>
+                    <!-- Aquí pasas el objeto Date a getFormattedFecha -->
+                    <td>{{ getFormattedDate(prestamo.fechaprestamo) }}</td>
+                    <td>{{ getFormattedDate(prestamo.fechaprevistadevolucion) }}</td>
+                    <td>{{ getFormattedDate(prestamo.fechadevolucion) }}</td>
                     <td><button class="button" (click)="devolverItem(prestamo.id)">Devolver</button></td>
-
-                </tr>
-                }
+                  </tr>
             </tbody>
         </table>
     </div>
     <button class="button" routerLink="/formularioprestamo">Resgistrar Nuevo Préstamo</button>
-    <br/>
-    <button class="button" routerLink="/listaitems">Ver lista de items completa</button>
-        </body>
-        </html>
+    <br />
+    <button type="button" class="btn-custom" routerLink="/listaitems">Atrás</button>
+</body>
+
+</html>

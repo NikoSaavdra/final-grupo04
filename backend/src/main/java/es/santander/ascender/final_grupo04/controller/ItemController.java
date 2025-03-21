@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import es.santander.ascender.final_grupo04.DTO.ItemDTO;
 import es.santander.ascender.final_grupo04.DTO.ItemResponseDTO;
+import es.santander.ascender.final_grupo04.model.Item;
 import es.santander.ascender.final_grupo04.service.ItemService;
 import jakarta.validation.Valid;
 
@@ -34,6 +35,7 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<List<ItemResponseDTO>> listarItemsDisponibles() {
         List<ItemResponseDTO> items = itemService.listarItemDisponibles();
+
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 

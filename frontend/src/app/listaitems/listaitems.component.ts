@@ -26,6 +26,19 @@ export class ListaitemsComponent {
     })
   }
 
+  obtenerEstado(tipoId: string): string {
+    if (tipoId === 'libro') {
+      return 'Disponible';
+    }
+    if (tipoId === 'revista') {
+      return 'En revisión';
+    }
+    if (tipoId === 'dvd') {
+      return 'En alquiler';
+    }
+    return 'Estado desconocido';
+  }
+
   borrar(id: number){
     this.itemRestService.eliminarItem(id).subscribe(()=>{
       this.itemRestService.buscarItems().subscribe((datos)=>{

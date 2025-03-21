@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Prestamo } from './prestamo';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PrestamoRestService {
 
   private apiUrl = "http://localhost:4200/api/prestamo";
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private datePipe: DatePipe) { }
 
   crearPrestamo(itemId: number, persona: string, fechaPrevistaDevolucion: string): Observable<Prestamo> {
     const params = new HttpParams()
@@ -38,7 +39,7 @@ export class PrestamoRestService {
   }
 
 
-  listarPrestamosActivos(persona?: string, fecha?: string): Observable<Prestamo[]> {
+  listarPrestamosActivos(persona?: string, fecha?: string | null): Observable<Prestamo[]> {
     let params = new HttpParams();
 
     // Si se proporciona el parámetro 'persona', lo agregamos a los parámetros
@@ -46,13 +47,14 @@ export class PrestamoRestService {
       params = params.set('persona', persona);
     }
 
-    // Si se proporciona el parámetro 'fecha', lo agregamos a los parámetros
+    // Si se proporciona el parámetro 'fecha' y no es null, lo agregamos a los parámetros
+  
     if (fecha) {
-      params = params.set('fecha', fecha);
-    }
-
+     
+          params = params.set('fecha', fecha);
+       
     // Realizamos la solicitud GET con los parámetros opcionales
     return this.http.get<Prestamo[]>(`${this.apiUrl}/activos`, { params });
   }
-
+}
 }

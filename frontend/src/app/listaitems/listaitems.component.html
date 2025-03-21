@@ -167,13 +167,13 @@
                 @for(item of listaItems ;track item.id){
                 <tr>
                     <td><img 
-                        src="icono_libro.png" class="img-fluid" alt="libro" width="30%"></td>
+                        src="icono_libro.png" class="img-fluid" alt="libro" width="25%"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
                     <td>{{ item.fechaadquisicion}}</td>
                     <td>{{ item.ubicacion }}</td>
-                    <td>{{ item.estado || 'No disponible' }}</td>
-                    <td>{{ item.tipo }}</td>
+                    <td>{{ item.estado }}</td>
+                    <td>{{ item.tipoId }}</td>
                     <td>{{ item.formato}}</td>
                     <td><button class="button" (click)="borrar(item.id)">Borrar</button></td>
 

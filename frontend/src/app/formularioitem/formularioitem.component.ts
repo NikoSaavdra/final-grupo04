@@ -19,7 +19,7 @@ export class FormularioitemComponent {
  public  crearItem(){
     this.itemRestService.crearItem(this.item).subscribe((datos)=>{
         console.log("Item insertado");
-        this.router.navigate([""]);
+        this.router.navigate(["/listaitems"]);
       });
   }
   }
