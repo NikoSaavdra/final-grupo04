@@ -22,7 +22,7 @@ dateString:string;
       this.listaPrestamosActivos = datos;
     });
     this.dateString=formatDate(Date.now(),'yyyy-MM-dd',this.locale);
-    formatDate = formatDate(this.fechaprestamo, 'yyyy-MM-dd', this.locale);
+    //MIRAR ESTO -> formatDate = formatDate(this.fechaprestamo, 'yyyy-MM-dd', this.locale);
     console.log(formatDate);
   }
 

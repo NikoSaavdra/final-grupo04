@@ -12,6 +12,8 @@ export class ItemRestService {
 
   constructor(private http: HttpClient) { }
 
+  
+
   listarItems(): Observable<Item[]> {
     return this.http.get<Item[]>(this.apiUrl).pipe(
       map(items => {
@@ -34,7 +36,6 @@ export class ItemRestService {
   public crearItem(item: Item): Observable<Item> {
     return this.http.post<Item>(this.apiUrl, item)
   }
-
 
   buscarItems(titulo?: string, tipo?: string, ubicacion?: string): Observable<Item[]> {
     let params = new HttpParams();

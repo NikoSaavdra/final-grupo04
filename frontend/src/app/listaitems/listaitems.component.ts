@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Item } from '../item';
 import { ItemRestService } from '../item-rest.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -17,14 +17,21 @@ export class ListaitemsComponent {
   tituloBusqueda: string = '';
   tipoBusqueda: string = '';
   ubicacionBusqueda: string = '';
+
   
 
   constructor(private itemRestService: ItemRestService) {
 
-    itemRestService.listarItems().subscribe((datos) => {
-      this.listaItems = datos;
-    })
-  }
+     this.obtenerItems();
+    }
+    obtenerItems(): void {
+      this.itemRestService.listarItems().subscribe((datos) => {
+        this.listaItems = datos;
+      });
+    }
+    trackById(index: number, item: any): any {
+      return item.id;
+    }
 
   obtenerEstado(tipoId: string): string {
     if (tipoId === 'libro') {
@@ -48,14 +55,8 @@ export class ListaitemsComponent {
   }
 
   buscar(): void {
-
-    const filtroTitulo = this.tituloBusqueda ? this.tituloBusqueda : '';
-    const filtroTipo = this.tipoBusqueda ? this.tipoBusqueda : '';
-    const filtroUbicacion = this.ubicacionBusqueda ? this.ubicacionBusqueda : '';
-    
     this.itemRestService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
-      (response: any) => {
-        console.log(response);
+      (response: Item[]) => {
         this.listaItems = response;
       },
       (error: any) => {

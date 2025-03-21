@@ -7,6 +7,7 @@
     <title>INICIO</title>
 
     <style>
+        /* Aquí tus estilos */
         html,
         body {
             background-color: rgb(233, 226, 209);
@@ -20,11 +21,8 @@
         body {
             display: flex;
             flex-direction: column;
-            /* Cambiamos la dirección a columna */
             justify-content: flex-start;
-            /* Alinea el contenido al inicio */
             align-items: center;
-            /* Alinea los elementos en el centro horizontalmente */
             height: 100vh;
             padding: 20px;
         }
@@ -34,16 +32,6 @@
             font-size: 2rem;
             color: #333;
             margin-bottom: 20px;
-            /* Espacio debajo del título */
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
         }
 
         .search-bar {
@@ -69,7 +57,6 @@
             border: 2px solid #ccc;
             background-color: #fff;
             cursor: pointer;
-
         }
 
         .table-container {
@@ -110,27 +97,18 @@
             color: #333;
         }
 
-        /* Bordes suaves */
         th,
         td {
             border-bottom: 1px solid #ddd;
         }
-
-        button {
-            background-color: #f6a53b;
-            border-collapse: collapse;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-        }
     </style>
 </head>
 
-
-<div class="row justify-content-md-center">
-    <p class="h2">MI COLECCIÓN</p>
-</div>
-
 <body>
+
+    <div class="row justify-content-md-center">
+        <p class="h2">MI COLECCIÓN</p>
+    </div>
 
     <div class="search-bar">
         <input [(ngModel)]="tituloBusqueda" type="text" placeholder="Buscar libro, película o Cd...">
@@ -141,14 +119,11 @@
             <option value="cd">CD</option>
         </select>
         <input [(ngModel)]="ubicacionBusqueda" placeholder="Buscar por ubicación" />
-        <button class="button" (click)="buscar()">Buscar</button>
+        <button class="btn btn-warning" (click)="buscar()">Buscar</button>
     </div>
     <br />
 
-
     <div class="table-container">
-        <!-- Tabla de ordenadores -->
-
         <table class="table">
             <thead class="table-warning">
                 <tr>
@@ -164,27 +139,25 @@
                 </tr>
             </thead>
             <tbody>
-                @for(item of listaItems ;track item.id){
-                <tr>
-                    <td><img 
-                        src="icono_libro.png" class="img-fluid" alt="libro" width="25%"></td>
+                <tr *ngFor="let item of listaItems; trackBy: trackById">
+                    <td><img src="icono_libro.png" class="img-fluid" alt="libro" width="25%"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
-                    <td>{{ item.fechaadquisicion}}</td>
+                    <td>{{ item.fechaadquisicion | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ item.ubicacion }}</td>
                     <td>{{ item.estado }}</td>
                     <td>{{ item.tipoId }}</td>
-                    <td>{{ item.formato}}</td>
-                    <td><button class="button" (click)="borrar(item.id)">Borrar</button></td>
-
+                    <td>{{ item.formato }}</td>
+                    <td><button class="btn btn-danger" (click)="borrar(item.id)">Borrar</button></td>
                 </tr>
-                }
             </tbody>
         </table>
     </div>
 
-    <button class="button" routerLink="/formularioitem">Insertar Nuevo Artículo</button>
-    <br/>
-    <button class="button" routerLink="/listaprestamos">Ver Préstamos Activos</button>
-    </body>
-    </html>
+    <button class="btn btn-secondary" routerLink="/formularioitem">Insertar Nuevo Artículo</button>
+    <br />
+    <button class="btn btn-secondary" routerLink="/listaprestamos">Ver Préstamos Activos</button>
+
+</body>
+
+</html>

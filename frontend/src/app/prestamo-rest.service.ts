@@ -41,20 +41,18 @@ export class PrestamoRestService {
 
   listarPrestamosActivos(persona?: string, fecha?: string | null): Observable<Prestamo[]> {
     let params = new HttpParams();
-
+  
     // Si se proporciona el parámetro 'persona', lo agregamos a los parámetros
     if (persona) {
       params = params.set('persona', persona);
     }
-
-    // Si se proporciona el parámetro 'fecha' y no es null, lo agregamos a los parámetros
   
+    // Si se proporciona el parámetro 'fecha' y no es null, lo agregamos a los parámetros
     if (fecha) {
-     
-          params = params.set('fecha', fecha);
-       
+      params = params.set('fecha', fecha);
+    }
+  
     // Realizamos la solicitud GET con los parámetros opcionales
     return this.http.get<Prestamo[]>(`${this.apiUrl}/activos`, { params });
   }
-}
 }
