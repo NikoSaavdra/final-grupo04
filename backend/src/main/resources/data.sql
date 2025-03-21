@@ -59,7 +59,15 @@ VALUES ('Avatar', 'Estante 4', '2024-01-10', TRUE, 3, 7, NULL);
 
 -- Inserción de préstamo de ejemplo 1 (sin especificar el ID)
 INSERT INTO prestamo (persona, fecha_prestamo, fecha_prevista_devolucion, fecha_devolucion, activo) 
-VALUES ('Juan Pérez', '2024-03-15', '2024-04-15', NULL, TRUE);
+VALUES ('Juan Pérez', '2025-03-15', '2025-05-15', NULL, TRUE);
+
+-- Inserción de préstamo de ejemplo 2
+INSERT INTO prestamo (persona, fecha_prestamo, fecha_prevista_devolucion, fecha_devolucion, activo) 
+VALUES ('María López', '2025-03-10', '2025-04-25', '2025-03-20', FALSE);
+
+-- Inserción de préstamo de ejemplo 3
+INSERT INTO prestamo (persona, fecha_prestamo, fecha_prevista_devolucion, fecha_devolucion, activo) 
+VALUES ('Carlos Gómez', '2025-03-05', '2025-06-05', NULL, TRUE);
 
 
 
