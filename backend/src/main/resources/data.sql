@@ -55,3 +55,14 @@ INSERT INTO item (titulo, ubicacion, fecha_adquisicion, estado, tipo_id, formato
 VALUES ('Avatar', 'Estante 4', '2024-01-10', TRUE, 3, 7, NULL);
 
 
+
+
+-- Inserción de préstamo de ejemplo 1 (sin especificar el ID)
+INSERT INTO prestamo (persona, fecha_prestamo, fecha_prevista_devolucion, fecha_devolucion, activo) 
+VALUES ('Juan Pérez', '2024-03-15', '2024-04-15', NULL, TRUE);
+
+
+
+
+
+
