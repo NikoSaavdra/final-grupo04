@@ -10,7 +10,7 @@ export class PrestamoRestService {
 
   private apiUrl = "http://localhost:4200/api/prestamo";
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private http:HttpClient) { }
 
   crearPrestamo(itemId: number, persona: string, fechaPrevistaDevolucion: string): Observable<Prestamo> {
     const params = new HttpParams()
@@ -19,7 +19,7 @@ export class PrestamoRestService {
       .set('fechaPrevistaDevolucion', fechaPrevistaDevolucion); // Asegúrate de enviar la fecha en formato adecuado
 
     // Realizamos la solicitud POST
-    return this.httpClient.post<Prestamo>(this.apiUrl, params, {
+    return this.http.post<Prestamo>(this.apiUrl, params, {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded', // Porque estamos enviando parámetros en la URL
       })
@@ -30,7 +30,7 @@ export class PrestamoRestService {
     const url = `${this.apiUrl}/devolver/${id}`; // URL con el id del préstamo
 
     // Realizamos la solicitud PUT
-    return this.httpClient.put<Prestamo>(url, null, {  // Usamos null porque no hay cuerpo en la solicitud
+    return this.http.put<Prestamo>(url, null, {  // Usamos null porque no hay cuerpo en la solicitud
       headers: new HttpHeaders({
         'Content-Type': 'application/json', // El tipo de contenido que estamos enviando
       })
@@ -52,7 +52,7 @@ export class PrestamoRestService {
     }
 
     // Realizamos la solicitud GET con los parámetros opcionales
-    return this.httpClient.get<Prestamo[]>(`${this.apiUrl}/activos`, { params });
+    return this.http.get<Prestamo[]>(`${this.apiUrl}/activos`, { params });
   }
 
 }

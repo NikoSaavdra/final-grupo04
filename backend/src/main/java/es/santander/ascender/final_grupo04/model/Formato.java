@@ -57,4 +57,11 @@ public class Formato {
     public void setTipos(List<Tipo> tipos) {
         this.tipos = tipos;
     }
+
+    @Override
+    public String toString() {
+        return "Formato [id=" + id + ", nombre=" + nombre + "]";
+    }
+
+    
 }

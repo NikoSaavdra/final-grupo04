@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca personal</title>
 
     <style>
-        html, body {
+        html,
+        body {
             background-color: rgb(233, 226, 209);
             margin: 0;
             padding: 0;
@@ -18,6 +20,8 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
+
+
         form {
             background-color: white;
             border-radius: 8px;
@@ -68,34 +72,40 @@
         .btn-custom:hover {
             background-color: #e6952e;
         }
-
     </style>
 </head>
 
 <body>
+    <div>
+        <button class="btn-custom" routerLink="/listaitems">Atrás</button>
+    </div>
     <form>
         <!-- Id -->
         <div class="mb-3">
             <label for="id" class="form-label text-primary">Id</label>
-            <input type="number" class="form-control" id="id" name="id" [(ngModel)]="item.id" placeholder="Introduce el id" required>
+            <input type="number" class="form-control" id="id" name="id" [(ngModel)]="item.id"
+                placeholder="Introduce el id" required>
         </div>
 
         <!-- Título -->
         <div class="mb-3">
             <label for="titulo" class="form-label text-primary">Título</label>
-            <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="item.titulo" placeholder="Introduce el título" required>
+            <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="item.titulo"
+                placeholder="Introduce el título" required>
         </div>
 
         <!-- Ubicación -->
         <div class="mb-3">
             <label for="ubicacion" class="form-label text-primary">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion" [(ngModel)]="item.ubicacion" placeholder="Introduce la ubicación">
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" [(ngModel)]="item.ubicacion"
+                placeholder="Introduce la ubicación">
         </div>
 
         <!-- Fecha de Adquisición -->
         <div class="mb-3">
             <label for="fechaadquisicion" class="form-label text-primary">Fecha de adquisición</label>
-            <input type="date" class="form-control" id="fechaadquisicion" name="fechaadquisicion" [(ngModel)]="item.fechaadquisicion">
+            <input type="date" class="form-control" id="fechaadquisicion" name="fechaadquisicion"
+                [(ngModel)]="item.fechaadquisicion">
         </div>
 
         <!-- Estado -->
@@ -110,10 +120,10 @@
         <!-- Tipo -->
         <div class="mb-3">
             <label for="tipo" class="form-label text-primary">Tipo</label>
-            <select class="form-control" id="tipo" name="tipo" [(ngModel)]="item.tipo">
-                <option value="libro">Libro</option>
-                <option value="pelicula">Película</option>
-                <option value="cd">CD</option>
+            <select class="form-control" id="tipo" name="tipo" [(ngModel)]="item.tipoId">
+                <option value="2">Libro</option>
+                <option value="3">Película</option>
+                <option value="1">Musicas</option>
             </select>
         </div>
 
@@ -121,8 +131,8 @@
         <div class="mb-3">
             <label for="formato" class="form-label text-primary">Formato</label>
             <select class="form-control" id="formato" name="formato" [(ngModel)]="item.formato">
-                <option value="fisico">Físico</option>
-                <option value="digital">Digital</option>
+                <option value="4">Físico</option>
+                <option value="5">Digital</option>
             </select>
         </div>
 
@@ -138,6 +148,6 @@
         <!-- Botón de Crear -->
         <button type="submit" class="btn-custom" (click)="crearItem()">Crear Nuevo</button>
     </form>
-
 </body>
+
 </html>

@@ -37,6 +37,21 @@
             height: auto; /* Mantener la relación de aspecto de la imagen */
             border-radius: 50%; /* Hacer la imagen redonda */
         }
+        .btn-custom {
+            background-color: #f6a53b;
+            color: white;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #e6952e;
+        }
 
     </style>
 </head>
@@ -45,7 +60,7 @@
         <h2 class="h2">COLECCIÓN PERSONAL</h2>
 
         <p><img src="iconoperfil.jpg" class="img-fluid" alt="imagendeperfil"></p>
-        <button class="btn btn-warning" routerLink="/listaitems">Acceder</button>
+        <button class="btn-custom" routerLink="/listaitems">Acceder</button>
         
     </div>
 </body>

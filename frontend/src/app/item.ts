@@ -5,12 +5,12 @@ export class Item {
 
     constructor(
 
-    public id:number,
+        public id:number,
         public titulo:string,
         public ubicacion:string,
         public fechaadquisicion : Date,
         public estado:boolean,
-        public tipo:Tipo,
+        public tipoId:number,
         public formato :string,
         public prestamo:Prestamo
     ){}
