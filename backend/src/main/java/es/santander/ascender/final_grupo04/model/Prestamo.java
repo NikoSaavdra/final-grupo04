@@ -1,10 +1,12 @@
 package es.santander.ascender.final_grupo04.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,8 +31,8 @@ public class Prestamo {
 
     private boolean activo = true; // Por defecto, los préstamos son activos
 
-    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL)
-    private List<Item> items;
+    @OneToMany(mappedBy = "prestamo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Item> items = new ArrayList<>();
 
     public Prestamo() {
     }

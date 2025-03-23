@@ -70,6 +70,14 @@ INSERT INTO prestamo (persona, fecha_prestamo, fecha_prevista_devolucion, fecha_
 VALUES ('Carlos Gómez', '2025-03-05', '2025-06-05', NULL, TRUE);
 
 
+-- Asociar algunos ítems a préstamos
+UPDATE item SET prestamo_id = 1 WHERE titulo = 'Álbum de Rock';
+UPDATE item SET prestamo_id = 1 WHERE titulo = 'Álbum de Jazz';
+UPDATE item SET prestamo_id = 2 WHERE titulo = 'Don Quijote de la Mancha';
+UPDATE item SET prestamo_id = 3 WHERE titulo = 'Inception';
+
+
+
 
 
 
