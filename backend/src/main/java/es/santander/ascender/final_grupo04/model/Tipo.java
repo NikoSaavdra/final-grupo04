@@ -1,11 +1,13 @@
 package es.santander.ascender.final_grupo04.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,13 +27,13 @@ public class Tipo {
     @NotNull
     private String nombre;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tipo_formato",
             joinColumns = @JoinColumn(name = "tipo_id"),
             inverseJoinColumns = @JoinColumn(name = "formato_id")
     )
-    private List<Formato> formatos;
+    private List<Formato> formatos = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL)

@@ -27,9 +27,9 @@ public class Item {
     private String titulo;
 
     private String ubicacion;
-    
+
     @Column(name = "fecha_adquisicion")
-    private LocalDate FechaADquisicion;
+    private LocalDate FechaAdquisicion;
 
     private boolean estado = true; // Por defecto, los ítems son "Disponibles"
 
@@ -53,7 +53,7 @@ public class Item {
         this.id = id;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
-        this.FechaADquisicion = fechaAdquisicion;
+        this.FechaAdquisicion = fechaAdquisicion;
         this.estado = estado;
         this.tipo = tipo;
         this.formato = formato;
@@ -108,7 +108,6 @@ public class Item {
         this.prestamo = prestamo;
     }
 
-
     public Formato getFormato() {
         return formato;
     }
@@ -118,12 +117,11 @@ public class Item {
     }
 
     public LocalDate getFechaADquisicion() {
-        return FechaADquisicion;
+        return FechaAdquisicion;
     }
 
     public void setFechaADquisicion(LocalDate fechaADquisicion) {
-        FechaADquisicion = fechaADquisicion;
+        FechaAdquisicion = fechaADquisicion;
     }
 
-    
 }

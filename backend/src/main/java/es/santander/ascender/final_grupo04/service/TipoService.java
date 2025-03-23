@@ -1,5 +1,6 @@
 package es.santander.ascender.final_grupo04.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,6 +60,7 @@ public class TipoService {
 
     @Transactional(readOnly = true)
     public List<TipoFormatoDTO> listarTipos() {
+        // Asegúrate de cargar todos los tipos y sus formatos asociados
         return tipoRepository.findAll().stream()
                 .map(tipo -> new TipoFormatoDTO(
                 tipo.getId(),
@@ -75,10 +77,16 @@ public class TipoService {
         Optional<Tipo> tipoOptional = tipoRepository.findById(id);
         if (tipoOptional.isPresent()) {
             Tipo tipo = tipoOptional.get();
-            tipo.setNombre(nombre);
-            return tipoRepository.save(tipo);
+
+            // Asegurarse de que la colección de formatos sea mutable (en caso de que sea inmutable)
+            if (!(tipo.getFormato() instanceof java.util.ArrayList)) {
+                tipo.setFormato(new ArrayList<>(tipo.getFormato()));  // Convertir a una lista mutable si no lo es
+            }
+
+            tipo.setNombre(nombre); // Actualizar el nombre
+            return tipoRepository.save(tipo); // Guardar el tipo con el nuevo nombre
         }
-        return null;
+        throw new RuntimeException("Tipo no encontrado");
     }
 
     public List<String> obtenerFormatosPorTipo(Long tipoId) {
@@ -93,6 +101,9 @@ public class TipoService {
 
     @Transactional
     public void eliminarTipo(Long id) {
+        if (!tipoRepository.existsById(id)) {
+            throw new RuntimeException("Tipo no encontrado");
+        }
         tipoRepository.deleteById(id);
     }
 }

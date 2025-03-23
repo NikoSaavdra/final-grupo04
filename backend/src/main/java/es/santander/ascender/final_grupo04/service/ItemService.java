@@ -34,13 +34,18 @@ public class ItemService {
         Tipo tipo = tipoRepository.findById(itemDTO.getTipoId())
                 .orElseThrow(() -> new RuntimeException("Tipo no encontrado"));
 
+        // Asegurarse de que la lista de formatos esté cargada
+        List<Formato> formatos = tipo.getFormato();
+        if (formatos == null || formatos.isEmpty()) {
+            throw new RuntimeException("El tipo no tiene formatos asociados");
+        }
 
-                System.out.println(tipo.getNombre());
-  System.out.println(tipo.getId());
-  //es una lista
-  System.out.println("el formato es :" +itemDTO.getFormato());
-  System.out.println(tipo.getFormato());
-  System.out.println("*********");
+        System.out.println(tipo.getNombre());
+        System.out.println(tipo.getId());
+        //es una lista
+        System.out.println("el formato es :" + itemDTO.getFormato());
+        System.out.println(tipo.getFormato());
+        System.out.println("*********");
         Formato formato = tipo.getFormato().stream()
                 .peek(System.out::println)
                 .filter(f -> f.getId().equals(Long.parseLong(itemDTO.getFormato())))

@@ -1,5 +1,16 @@
 package es.santander.ascender.final_grupo04;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import es.santander.ascender.final_grupo04.DTO.ItemDTO;
 import es.santander.ascender.final_grupo04.DTO.ItemResponseDTO;
 import es.santander.ascender.final_grupo04.model.Item;
@@ -7,15 +18,6 @@ import es.santander.ascender.final_grupo04.model.Tipo;
 import es.santander.ascender.final_grupo04.repository.ItemRepository;
 import es.santander.ascender.final_grupo04.repository.TipoRepository;
 import es.santander.ascender.final_grupo04.service.ItemService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ItemServiceTest {
@@ -58,8 +60,8 @@ public class ItemServiceTest {
         assertNotNull(response);
         assertEquals(itemDTO.getTitulo(), response.getTitulo());
         assertEquals(itemDTO.getUbicacion(), response.getUbicacion());
-        assertEquals("Música", response.getTipo());
-        assertEquals("CD", response.getFormato());
+        assertEquals(tipo.getNombre(), response.getTipo()); // "Música"
+        assertEquals("CD", response.getFormato()); // Formato validado
     }
 
     @Test
@@ -106,6 +108,20 @@ public class ItemServiceTest {
         assertEquals(itemDTO.getTitulo(), response.getTitulo());
         assertEquals(itemDTO.getUbicacion(), response.getUbicacion());
         assertEquals("CD", response.getFormato()); // Verificar que el formato sea "CD"
+    }
+
+    @Test
+    void testCrearItemConFormato_FormatoInvalido() {
+        // Crear un DTO con un formato no asociado al tipo "Música"
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setTitulo("Ítem Inválido");
+        itemDTO.setUbicacion("Estante Z");
+        itemDTO.setTipoId(tipo.getId());
+        itemDTO.setFormato("5"); // Formato "PDF", no válido para tipo "Música"
+
+        // Verificar que se lanza una excepción
+        Exception exception = assertThrows(RuntimeException.class, () -> itemService.crearItemConFormato(itemDTO));
+        assertEquals("Formato no válido para el tipo seleccionado", exception.getMessage());
     }
 
     @Test

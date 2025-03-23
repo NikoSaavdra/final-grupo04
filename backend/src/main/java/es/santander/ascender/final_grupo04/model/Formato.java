@@ -1,5 +1,6 @@
 package es.santander.ascender.final_grupo04.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +24,9 @@ public class Formato {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "formatos")
-    private List<Tipo> tipos;
+    private List<Tipo> tipos = new ArrayList<>();
+
+    ;
 
     public Formato() {
     }
@@ -63,5 +66,4 @@ public class Formato {
         return "Formato [id=" + id + ", nombre=" + nombre + "]";
     }
 
-    
 }
