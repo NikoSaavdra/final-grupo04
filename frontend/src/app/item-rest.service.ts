@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Item } from './item';
 import { map, Observable } from 'rxjs';
+import { Prestamo } from './prestamo';
+import { ItemData } from './item-data';
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +17,14 @@ export class ItemRestService {
   
 
   listarItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.apiUrl).pipe(
+    return this.http.get<ItemData[]>(this.apiUrl).pipe(
+      
       map(items => {
         return items.map(item => {
-          console.log('Estado:', item.estado);  // Depurar qué valor tiene 'estado'
-  
-          // Asegurarse de que el valor sea booleano
-          const estadoBooleano = Boolean(item.estado);
-  
-          return {
-            ...item,
-            disponible: estadoBooleano ? 'Disponible' : ''  // Si es true, 'Disponible', si no es false o cualquier otro valor, cadena vacía
-          };
+        
+          let trozosFechas:string[]=item.fechaAdquisicion.split("-");
+          let fechaAdquisicion= new Date(parseInt(trozosFechas[0]),parseInt(trozosFechas[1])-1,parseInt(trozosFechas[2]));
+          return new Item(item.id,item.titulo,item.ubicacion,fechaAdquisicion,item.estado,item.tipoId,item.formato,{} as Prestamo)
         });
       })
     );
