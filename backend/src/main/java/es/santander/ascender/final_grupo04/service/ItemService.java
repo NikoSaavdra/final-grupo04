@@ -58,7 +58,7 @@ public class ItemService {
         item.setTipo(tipo);
         item.setFormato(formato);
         item.setEstado(true);
-        item.setFechaADquisicion(LocalDate.now());
+        item.setFechaAdquisicion(LocalDate.now());
 
         itemRepository.save(item);
         return convertirADTO(item);

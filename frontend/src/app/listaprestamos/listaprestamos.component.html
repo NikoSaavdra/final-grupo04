@@ -124,11 +124,11 @@
                     <td>{{ prestamo.id }}</td>
                     <td>{{ prestamo.persona }}</td>
                     <!-- Aquí pasas el objeto Date a getFormattedFecha -->
-                    <td>{{ getFormattedDate(prestamo.fechaprestamo) }}</td>
-                    <td>{{ getFormattedDate(prestamo.fechaprevistadevolucion) }}</td>
-                    <td>{{ getFormattedDate(prestamo.fechadevolucion) }}</td>
+                    <td>{{ prestamo.fechaprestamo }}</td>
+                    <td>{{ prestamo.fechaprevistadevolucion }}</td>
+                    <td>{{ prestamo.fechadevolucion }}</td>
                     <td><button class="button" (click)="devolverItem(prestamo.id)">Devolver</button></td>
-                  </tr>
+</tr>
             </tbody>
         </table>
     </div>

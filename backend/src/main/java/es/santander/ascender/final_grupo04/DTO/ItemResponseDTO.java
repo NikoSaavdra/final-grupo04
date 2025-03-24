@@ -2,6 +2,8 @@ package es.santander.ascender.final_grupo04.DTO;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ItemResponseDTO {
 
     private Long id;
@@ -10,16 +12,17 @@ public class ItemResponseDTO {
     private boolean estado;
     private String tipo; // Nombre del tipo
     private String formato; // Nombre del formato
-    private LocalDate fechaADquisicion;
+     @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaAdquisicion;
 
-    public ItemResponseDTO(Long id, String titulo, String ubicacion, boolean estado, String tipo, String formato, LocalDate fechaADquisicion) {
+    public ItemResponseDTO(Long id, String titulo, String ubicacion, boolean estado, String tipo, String formato, LocalDate fechaAdquisicion) {
         this.id = id;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.estado = estado;
         this.tipo = tipo;
         this.formato = formato;
-        this.fechaADquisicion = fechaADquisicion;
+        this.fechaAdquisicion = fechaAdquisicion;
     }
 
     public Long getId() {
@@ -70,12 +73,12 @@ public class ItemResponseDTO {
         this.formato = formato;
     }
 
-    public LocalDate getFechaADquisicion() {
-        return fechaADquisicion;
+    public LocalDate getFechaAdquisicion() {
+        return fechaAdquisicion;
     }
 
-    public void setFechaADquisicion(LocalDate fechaADquisicion) {
-        this.fechaADquisicion = fechaADquisicion;
+    public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
+        this.fechaAdquisicion = fechaAdquisicion;
     }
 
 }

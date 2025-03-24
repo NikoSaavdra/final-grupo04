@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ public class Item {
     private String ubicacion;
 
     @Column(name = "fecha_adquisicion")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate FechaAdquisicion;
 
     private boolean estado = true; // Por defecto, los ítems son "Disponibles"
@@ -120,8 +122,8 @@ public class Item {
         return FechaAdquisicion;
     }
 
-    public void setFechaADquisicion(LocalDate fechaADquisicion) {
-        FechaAdquisicion = fechaADquisicion;
+    public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
+        FechaAdquisicion = fechaAdquisicion;
     }
 
 }

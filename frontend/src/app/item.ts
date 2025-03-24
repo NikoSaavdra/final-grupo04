@@ -15,17 +15,4 @@ export class Item {
         public prestamo:Prestamo
     ){}
 
-    public static fromJson(json: any): Item {
-        const item = new Item(
-            json.id,
-            json.titulo,
-            json.ubicacion,
-            new Date(json.fechaadquisicion), // Aseguramos que la fecha se convierta correctamente
-            json.estado,
-            json.tipoId,
-            json.formato,
-            json.prestamo
-        );
-        return item;
-    }
 }

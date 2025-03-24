@@ -1,11 +1,17 @@
 package es.santander.ascender.final_grupo04.DTO;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ItemDTO {
 
     private String titulo;
     private String ubicacion;
     private Long tipoId; // ID del tipo asociado
-    private String formato; // Formato seleccionado (por ejemplo, "CD" o "Vinilo")
+    private String formato;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaAdquisicion; // Formato seleccionado (por ejemplo, "CD" o "Vinilo")
 
     // Getters y Setters
     public String getTitulo() {
@@ -38,5 +44,13 @@ public class ItemDTO {
 
     public void setFormato(String formato) {
         this.formato = formato;
+    }
+
+    public LocalDate getFechaAdquisicion() {
+        return fechaAdquisicion;
+    }
+
+    public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
+        this.fechaAdquisicion = fechaAdquisicion;
     }
 }
