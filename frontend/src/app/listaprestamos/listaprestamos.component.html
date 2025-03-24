@@ -121,13 +121,13 @@
             </thead>
             <tbody>
                 <tr *ngFor="let prestamo of listaPrestamosActivos">
-                    <td>{{ prestamo.id }}</td>
+                    <td>{{ prestamo.itemId }}</td>
                     <td>{{ prestamo.persona }}</td>
                     <!-- Aquí pasas el objeto Date a getFormattedFecha -->
                     <td>{{ prestamo.fechaprestamo }}</td>
                     <td>{{ prestamo.fechaprevistadevolucion }}</td>
                     <td>{{ prestamo.fechadevolucion }}</td>
-                    <td><button class="button" (click)="devolverItem(prestamo.id)">Devolver</button></td>
+                    <td><button class="button" (click)="devolverItem(prestamo.itemId)">Devolver</button></td>
 </tr>
             </tbody>
         </table>

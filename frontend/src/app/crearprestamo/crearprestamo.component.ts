@@ -19,7 +19,7 @@ export class CrearprestamoComponent {
   public  crearPrestamo(){
     const itemId = this.prestamo.itemId; // Asumiendo que prestamo es un objeto con un campo itemId
   const persona = this.prestamo.persona;
-  const fechaPrevistaDevolucion = this.prestamo.fechaprevistadevolucion.toISOString();
+  const fechaPrevistaDevolucion = this.prestamo.fechaprevistadevolucion.toString();
 
     this.prestamoRestService.crearPrestamo(itemId, persona, fechaPrevistaDevolucion).subscribe((datos)=>{
         console.log("Prestamo insertado");

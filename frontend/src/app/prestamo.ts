@@ -3,7 +3,7 @@ import { Item } from "./item";
 export class Prestamo {
 
     constructor(
-        public id:number,
+        public itemId:number,
         public persona:string,
         public fecha:string,
         public fechaprestamo:string,
