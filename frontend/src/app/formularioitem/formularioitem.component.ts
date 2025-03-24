@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Item } from '../item';
 import { ItemRestService } from '../item-rest.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-formularioitem',
-  imports: [FormsModule],
+  imports: [FormsModule,RouterLink],
   templateUrl: './formularioitem.component.html',
   styleUrl: './formularioitem.component.css'
 })

@@ -3,12 +3,17 @@ package es.santander.ascender.final_grupo04.DTO;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class PrestamoResponseDTO {
 
     private Long id;
     private String persona;
+         @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaPrestamo;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaPrevistaDevolucion;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaDevolucion;
     private boolean activo;
     private List<ItemPrestamoDTO> items;

@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Prestamo } from './prestamo';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { PrestamoData } from './prestamo-data';
+import { Item } from './item';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class PrestamoRestService {
 
   private apiUrl = "http://localhost:4200/api/prestamo";
 
-  constructor(private http:HttpClient, private datePipe: DatePipe) { }
+  constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
   crearPrestamo(itemId: number, persona: string, fechaPrevistaDevolucion: string): Observable<Prestamo> {
     const params = new HttpParams()
@@ -40,19 +42,47 @@ export class PrestamoRestService {
 
 
   listarPrestamosActivos(persona?: string, fecha?: string | null): Observable<Prestamo[]> {
+
     let params = new HttpParams();
-  
-    // Si se proporciona el parámetro 'persona', lo agregamos a los parámetros
     if (persona) {
       params = params.set('persona', persona);
     }
-  
-    // Si se proporciona el parámetro 'fecha' y no es null, lo agregamos a los parámetros
     if (fecha) {
       params = params.set('fecha', fecha);
     }
-  
-    // Realizamos la solicitud GET con los parámetros opcionales
-    return this.http.get<Prestamo[]>(`${this.apiUrl}/activos`, { params });
+    return this.http.get<PrestamoData[]>(`${this.apiUrl}/activos`, { params }).pipe(
+      map(prestamos => {
+        return prestamos.map(prestamo => {
+          let fechaPrestamo = this.convertirFecha(prestamo.fechaPrestamo);
+          let fechaDevolucion = this.convertirFecha(prestamo.fechaDevolucion);
+          let fechaPrevistaDevolucion = this.convertirFecha(prestamo.fechaPrevistaDevolucion);
+
+          // Si alguna fecha es null, asignar una fecha predeterminada (ej. nueva fecha)
+          fechaPrestamo = fechaPrestamo ?? new Date();
+          fechaDevolucion = fechaDevolucion ?? new Date();
+          fechaPrevistaDevolucion = fechaPrevistaDevolucion ?? new Date();
+
+          return new Prestamo(
+            prestamo.itemId,
+            prestamo.persona,
+            fechaPrestamo,
+            fechaPrevistaDevolucion,
+            fechaDevolucion,
+            prestamo.activo
+          );
+        });
+      })
+    )
+  }
+  private convertirFecha(fecha: string | null): Date | null {
+    // Verificar si la fecha es nula o vacía antes de procesarla
+    if (fecha && fecha.trim() !== '') {
+      let trozosFechas: string[] = fecha.split("-");
+      if (trozosFechas.length === 3) {
+        // Si la fecha tiene el formato correcto, la procesamos
+        return new Date(parseInt(trozosFechas[0]), parseInt(trozosFechas[1]) - 1, parseInt(trozosFechas[2]));
+      }
+    }
+    return null;  // Si la fecha es nula o no tiene el formato adecuado, devolvemos null
   }
 }

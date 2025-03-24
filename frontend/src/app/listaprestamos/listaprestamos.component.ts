@@ -12,7 +12,6 @@ import { RouterLink } from '@angular/router';
 })
 export class ListaprestamosComponent {
   listaPrestamosActivos: Prestamo[] = [];
-  currentDate = new Date();
 
 
   constructor(private prestamoRestService: PrestamoRestService, private datePipe: DatePipe,
@@ -25,9 +24,6 @@ export class ListaprestamosComponent {
     });
   }
 
-  getFormattedDate(date: Date): string {
-    return this.datePipe.transform(date, 'dd/MM/yyyy') || '';
-  }
 
   trackById(index: number, item: any): number {
     return item.id; // Asumimos que el identificador único es 'id'

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Prestamo } from '../prestamo';
 import { PrestamoRestService } from '../prestamo-rest.service';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ export class CrearprestamoComponent {
   public  crearPrestamo(){
     const itemId = this.prestamo.itemId; // Asumiendo que prestamo es un objeto con un campo itemId
   const persona = this.prestamo.persona;
-  const fechaPrevistaDevolucion = this.prestamo.fechaprevistadevolucion.toString();
+  const fechaPrevistaDevolucion = this.prestamo.fechaPrevistaDevolucion.toString();
 
     this.prestamoRestService.crearPrestamo(itemId, persona, fechaPrevistaDevolucion).subscribe((datos)=>{
         console.log("Prestamo insertado");

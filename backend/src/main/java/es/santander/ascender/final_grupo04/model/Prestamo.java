@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,10 +25,13 @@ public class Prestamo {
     @NotNull
     private String persona;
 
+         @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaPrestamo;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaPrevistaDevolucion;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaDevolucion;
 
     private boolean activo = true; // Por defecto, los préstamos son activos

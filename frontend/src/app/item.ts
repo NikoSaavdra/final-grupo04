@@ -12,7 +12,7 @@ export class Item {
         public estado:boolean,
         public tipoId:number,
         public formato :string,
-        public prestamo:Prestamo
+        public prestamo:Prestamo,
     ){}
 
 }

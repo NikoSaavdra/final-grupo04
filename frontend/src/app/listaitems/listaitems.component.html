@@ -101,6 +101,45 @@
         td {
             border-bottom: 1px solid #ddd;
         }
+
+        button{
+            gap: 20px; /* Establece la separación entre los botones */
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            /* Color de fondo similar al color de advertencia de Bootstrap */
+            color: white;
+            /* Color del texto (gris oscuro) */
+            border: 1px solid #ffc107;
+            /* Borde del mismo color que el fondo */
+            padding: 10px 20px;
+            /* Espaciado interno */
+            font-size: 16px;
+            /* Tamaño de fuente */
+            border-radius: 5px;
+            /* Bordes redondeados */
+            cursor: pointer;
+            /* Cambia el cursor al pasar por encima */
+            transition: background-color 0.3s, border-color 0.3s;
+            /* Efecto suave al pasar el ratón */
+
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            /* Color más oscuro al pasar el ratón */
+            border-color: #e0a800;
+            /* Borde más oscuro */
+
+        }
+
+        .btn-warning:focus {
+            outline: none;
+            /* Elimina el contorno por defecto al hacer clic */
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+            /* Sombra de enfoque similar a la de Bootstrap */
+        }
     </style>
 </head>
 
@@ -154,9 +193,8 @@
         </table>
     </div>
 
-    <button class="btn btn-secondary" routerLink="/formularioitem">Insertar Nuevo Artículo</button>
-    <br />
-    <button class="btn btn-secondary" routerLink="/listaprestamos">Ver Préstamos Activos</button>
+    <button class="btn-warning" routerLink="/formularioitem">Insertar Nuevo Artículo</button>
+    <button class="btn-warning" routerLink="/listaprestamos">Ver Préstamos Activos</button>
 
 </body>
 

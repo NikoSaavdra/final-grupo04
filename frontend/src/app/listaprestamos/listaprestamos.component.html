@@ -114,8 +114,8 @@
                     <th class="col">Id</th>
                     <th class="col">Persona en Préstamo</th>
                     <th class="col">Fecha Préstamo</th>
-                    <th class="col">Fecha de devolución Prevista</th>
-                    <th class="col">fecha de devolución</th>
+                    <th class="col">Fecha de Devolución Prevista</th>
+                    <th class="col">Fecha de Devolución</th>
                     <th class="col"></th>
                 </tr>
             </thead>
@@ -123,16 +123,15 @@
                 <tr *ngFor="let prestamo of listaPrestamosActivos">
                     <td>{{ prestamo.itemId }}</td>
                     <td>{{ prestamo.persona }}</td>
-                    <!-- Aquí pasas el objeto Date a getFormattedFecha -->
-                    <td>{{ prestamo.fechaprestamo }}</td>
-                    <td>{{ prestamo.fechaprevistadevolucion }}</td>
-                    <td>{{ prestamo.fechadevolucion }}</td>
+                    <td>{{ prestamo.fechaPrestamo }}</td>
+                    <td>{{ prestamo.fechaPrevistaDevolucion }}</td>
+                    <td>{{ prestamo.fechaDevolucion }}</td>
                     <td><button class="button" (click)="devolverItem(prestamo.itemId)">Devolver</button></td>
 </tr>
             </tbody>
         </table>
     </div>
-    <button class="button" routerLink="/formularioprestamo">Resgistrar Nuevo Préstamo</button>
+    <button class="button" routerLink="/crearprestamo">Resgistrar Nuevo Préstamo</button>
     <br />
     <button type="button" class="btn-custom" routerLink="/listaitems">Atrás</button>
 </body>
