@@ -158,9 +158,9 @@
                 <tr *ngFor="let prestamo of listaPrestamosActivos">
                     <td>{{ prestamo.itemId }}</td>
                     <td>{{ prestamo.persona }}</td>
-                    <td>{{ prestamo.fechaPrestamo }}</td>
-                    <td>{{ prestamo.fechaPrevistaDevolucion }}</td>
-                    <td>{{ prestamo.fechaDevolucion }}</td>
+                    <td>{{ prestamo.fechaPrestamo | date: 'dd-MM-yy'}}</td>
+                    <td>{{ prestamo.fechaPrevistaDevolucion | date: 'dd-MM-yy'}}</td>
+                    <td>{{ prestamo.fechaDevolucion | date: 'dd-MM-yy'}}</td>
                     <td><button class="btn-warning" (click)="devolverItem(prestamo.itemId)">Devolver</button></td>
 </tr>
             </tbody>
