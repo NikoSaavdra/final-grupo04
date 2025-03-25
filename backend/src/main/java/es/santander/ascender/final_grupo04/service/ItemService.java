@@ -80,9 +80,22 @@ public class ItemService {
     @Transactional(readOnly = true)
     public List<ItemResponseDTO> buscarItems(String titulo, String tipo, String ubicacion, String ordenarPor) {
         // Validar parámetro de ordenación
+        List<ItemResponseDTO> items = listarItemDisponibles(); 
         Sort sort = Sort.unsorted();
-        if (ordenarPor != null && !ordenarPor.isBlank()) {
-            sort = Sort.by(Sort.Direction.ASC, ordenarPor);
+        if (titulo != null && !titulo.isEmpty()) {
+            items = items.stream()
+                         .filter(item -> item.getTitulo().contains(titulo))
+                         .collect(Collectors.toList());
+        }
+        if (tipo != null && !tipo.isEmpty()) {
+            items = items.stream()
+                         .filter(item -> item.getTipo().contains(tipo))
+                         .collect(Collectors.toList());
+        }
+        if (ubicacion != null && !ubicacion.isEmpty()) {
+            items = items.stream()
+                         .filter(item -> item.getUbicacion().contains(ubicacion))
+                         .collect(Collectors.toList());
         }
 
         return itemRepository.buscarPorCriterios(titulo, tipo, ubicacion, sort).stream()

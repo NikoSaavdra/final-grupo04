@@ -6,6 +6,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { FormularioitemComponent } from './formularioitem/formularioitem.component';
 import { ListaprestamosComponent } from './listaprestamos/listaprestamos.component';
 import { CrearprestamoComponent } from './crearprestamo/crearprestamo.component';
+import { ModificaritemComponent } from './modificaritem/modificaritem.component';
 
 export const routes: Routes = [
   { path: '', component:InicioComponent},
@@ -13,4 +14,5 @@ export const routes: Routes = [
   { path: 'formularioitem', component:FormularioitemComponent },
   { path: 'listaprestamos', component:ListaprestamosComponent },
   { path: 'crearprestamo', component:CrearprestamoComponent},
+  {path: 'modificaritem',component:ModificaritemComponent}
 ];

@@ -1,1 +1,1 @@
-GET http://localhost:8080/api/prestamo
+GET /api/items/buscar?titulo=1984

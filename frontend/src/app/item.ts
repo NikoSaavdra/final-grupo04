@@ -11,7 +11,6 @@ export class Item {
         public fechaadquisicion : Date,
         public estado:boolean,
         public tipoId:number,
-        public tipo:Tipo,
         public formato :string,
         public prestamo:Prestamo,
     ){}

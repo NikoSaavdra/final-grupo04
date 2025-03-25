@@ -25,7 +25,7 @@ export class ItemRestService {
         
           let trozosFechas:string[]=item.fechaAdquisicion.split("-");
           let fechaAdquisicion= new Date(parseInt(trozosFechas[0]),parseInt(trozosFechas[1])-1,parseInt(trozosFechas[2]));
-          return new Item(item.id,item.titulo,item.ubicacion,fechaAdquisicion,item.estado,item.tipoId,{}as Tipo,item.formato,{} as Prestamo)
+          return new Item(item.id,item.titulo,item.ubicacion,fechaAdquisicion,item.estado,item.tipoId,item.formato,{} as Prestamo)
         });
       })
     );
@@ -36,23 +36,23 @@ export class ItemRestService {
     return this.http.post<Item>(this.apiUrl, item)
   }
 
-  buscarItems(titulo?: string, tipo?: string, ubicacion?: string): Observable<Item[]> {
+  buscarItems(titulo?: string, tipo?: string, ubicacion?: string, ordenarPor: string = 'titulo'): Observable<Item[]> {
     let params = new HttpParams();
-
-    // Solo agregamos los parámetros si no son nulos o indefinidos
-    if (titulo && titulo.trim() !== '') {
+    
+    if (titulo) {
       params = params.set('titulo', titulo);
     }
-    if (tipo && tipo.trim() !== '') {
+    if (tipo) {
       params = params.set('tipo', tipo);
     }
-    if (ubicacion && ubicacion.trim() !== '') {
+    if (ubicacion) {
       params = params.set('ubicacion', ubicacion);
     }
-
-    // Realizamos la solicitud GET con los parámetros
-    return this.http.get<Item[]>(this.apiUrl, { params: params });
+    params = params.set('ordenarPor', ordenarPor); // Parámetro de ordenación
+    
+    return this.http.get<Item[]>(`${this.apiUrl}/buscar`, { params });
   }
+
 
   actualizarItem(id: number, itemDetails: Item): Observable<Item> {
     const url = `${this.apiUrl}/${id}`; // Construimos la URL con el id del item
@@ -64,7 +64,9 @@ export class ItemRestService {
       }),
     });
   }
-
+  getItemById(id: number): Observable<Item> {
+    return this.http.get<Item>(`${this.apiUrl}/${id}`);
+  }
 
   eliminarItem(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`; // Construimos la URL con el id del item

@@ -16,28 +16,8 @@ export class PrestamoRestService {
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
   crearPrestamo(itemId: number, persona: string, fechaPrevistaDevolucion: string): Observable<Prestamo> {
-    // Verificar si la fecha es válida antes de enviarla
-    const fechaFormateada = this.convertirFechaCrear(fechaPrevistaDevolucion);
-    const fechaISO = fechaFormateada ? fechaFormateada.toISOString().split('T')[0] : ''; // Formato YYYY-MM-DD
-
-    // Si la fecha está vacía, asegurarse de enviar una cadena vacía o un valor adecuado
-    if (!fechaISO) {
-      console.error("Fecha no válida:", fechaPrevistaDevolucion);
-      // Se puede asignar un valor predeterminado o manejar el caso de error
-    }
-
-    const params = new HttpParams()
-      .set('itemId', itemId.toString())
-      .set('persona', persona)
-      .set('fechaPrevistaDevolucion', fechaISO); // Asegúrate de enviar la fecha en formato adecuado
-
-    // Realizamos la solicitud POST
-    return this.http.post<Prestamo>(this.apiUrl, params, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded', // Porque estamos enviando parámetros en la URL
-      })
-    });
-}
+    return this.http.post<Prestamo>(this.apiUrl, {HttpParams})
+  }
 
   devolverItem(id: number): Observable<Prestamo> {
     const url = `${this.apiUrl}/devolver/${id}`; // URL con el id del préstamo
