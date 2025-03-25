@@ -48,16 +48,15 @@ export class ItemRestService {
     if (ubicacion) {
       params = params.set('ubicacion', ubicacion);
     }
-    params = params.set('ordenarPor', ordenarPor); // Parámetro de ordenación
+    params = params.set('ordenarPor', ordenarPor);
     
     return this.http.get<Item[]>(`${this.apiUrl}/buscar`, { params });
   }
 
 
   actualizarItem(id: number, itemDetails: Item): Observable<Item> {
-    const url = `${this.apiUrl}/${id}`; // Construimos la URL con el id del item
+    const url = `${this.apiUrl}/${id}`;
 
-    // Realizamos la solicitud PUT con el id y el cuerpo del item a actualizar
     return this.http.put<Item>(url, itemDetails, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -69,9 +68,9 @@ export class ItemRestService {
   }
 
   eliminarItem(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`; // Construimos la URL con el id del item
+    const url = `${this.apiUrl}/${id}`;
 
-    // Realizamos la solicitud DELETE con el id del item
+
     return this.http.delete<void>(url, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

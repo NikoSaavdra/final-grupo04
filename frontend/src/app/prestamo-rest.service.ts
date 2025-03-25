@@ -20,12 +20,12 @@ export class PrestamoRestService {
   }
 
   devolverItem(id: number): Observable<Prestamo> {
-    const url = `${this.apiUrl}/devolver/${id}`; // URL con el id del préstamo
+    const url = `${this.apiUrl}/devolver/${id}`;
 
-    // Realizamos la solicitud PUT
-    return this.http.put<Prestamo>(url, null, {  // Usamos null porque no hay cuerpo en la solicitud
+
+    return this.http.put<Prestamo>(url, null, { 
       headers: new HttpHeaders({
-        'Content-Type': 'application/json', // El tipo de contenido que estamos enviando
+        'Content-Type': 'application/json',
       })
     });
   }
@@ -47,7 +47,7 @@ export class PrestamoRestService {
           let fechaDevolucion = this.convertirFecha(prestamo.fechaDevolucion);
           let fechaPrevistaDevolucion = this.convertirFecha(prestamo.fechaPrevistaDevolucion);
 
-          // Si alguna fecha es null, asignar una fecha predeterminada (ej. nueva fecha)
+
           fechaPrestamo = fechaPrestamo ?? new Date();
           fechaDevolucion = fechaDevolucion ?? new Date();
           fechaPrevistaDevolucion = fechaPrevistaDevolucion ?? new Date();
@@ -65,15 +65,15 @@ export class PrestamoRestService {
     )
   }
   public convertirFecha(fecha: string | null): Date | null {
-    // Verificar si la fecha es nula o vacía antes de procesarla
+
     if (fecha && fecha.trim() !== '') {
       let trozosFechas: string[] = fecha.split("-");
       if (trozosFechas.length === 3) {
-        // Si la fecha tiene el formato correcto, la procesamos
+
         return new Date(parseInt(trozosFechas[0]), parseInt(trozosFechas[1]) - 1, parseInt(trozosFechas[2]));
       }
     }
-    return null;  // Si la fecha es nula o no tiene el formato adecuado, devolvemos null
+    return null;
   }
 
 private convertirFechaCrear (fecha: string | null): Date | null {
@@ -83,6 +83,6 @@ private convertirFechaCrear (fecha: string | null): Date | null {
       return new Date(parseInt(trozosFechas[0]), parseInt(trozosFechas[1]) - 1, parseInt(trozosFechas[2]));
     }
   }
-  return null; // Si la fecha no es válida, retornar null
+  return null;
 }
 }

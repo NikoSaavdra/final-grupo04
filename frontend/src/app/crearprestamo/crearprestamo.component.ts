@@ -33,7 +33,7 @@ export class CrearprestamoComponent {
         (error) => {
           console.error('Error al crear el préstamo:', error);
           if (error.error) {
-            console.error('Detalles del error:', error.error); // Aquí pueden aparecer detalles de la API
+            console.error('Detalles del error:', error.error);
           }
         }
       );

@@ -13,39 +13,39 @@ export class TipoRestService {
   constructor(private httpClient:HttpClient) { }
 
   crearTipo(tipo: Tipo): Observable<Tipo> {
-    const url = `${this.apiUrl}`;  // URL para crear un nuevo tipo
+    const url = `${this.apiUrl}`;
 
-    // Realizamos la solicitud POST
+
     return this.httpClient.post<Tipo>(url, tipo, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json', // Indicamos que el contenido es JSON
+        'Content-Type': 'application/json',
       })
     });
   }
 
   listarTipos(): Observable<Tipo[]> {
-    return this.httpClient.get<Tipo[]>(this.apiUrl); // Realizamos la solicitud GET
+    return this.httpClient.get<Tipo[]>(this.apiUrl);
   }
 
   actualizarTipo(id: number, nombre: string): Observable<Tipo> {
-    const url = `${this.apiUrl}/${id}`;  // La URL con el id para actualizar un tipo
+    const url = `${this.apiUrl}/${id}`;
 
-    // Realizamos la solicitud PUT
+
     return this.httpClient.put<Tipo>(url, { nombre }, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json', // Indicamos que el contenido es JSON
+        'Content-Type': 'application/json',
       })
     });
   }
 
 
   eliminarTipo(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`;  // URL con el ID para eliminar el tipo
+    const url = `${this.apiUrl}/${id}`;
 
-    // Realizamos la solicitud DELETE
+
     return this.httpClient.delete<void>(url, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json', // Indicamos que el contenido es JSON
+        'Content-Type': 'application/json',
       })
     });
   }

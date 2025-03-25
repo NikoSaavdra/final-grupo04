@@ -23,7 +23,7 @@ export class ListaitemsComponent {
 
   constructor(private itemRestService: ItemRestService) {
 
-     this.obtenerItems();
+this.obtenerItems();
     }
     obtenerItems(): void {
       this.itemRestService.listarItems().subscribe((datos) => {

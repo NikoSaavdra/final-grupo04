@@ -23,7 +23,7 @@ export class ModificaritemComponent implements OnInit {
     formato: '',
     prestamo: {} as Prestamo,
     tipoId: 0
-  }; // Inicializa con valores predeterminados
+  };
   errorMessage: string = '';
 
   constructor(
@@ -33,14 +33,14 @@ export class ModificaritemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Obtener el id del item de la URL
+
     this.route.params.subscribe(params => {
-      this.item.id = +params['id'];  // El ID del item es pasado como parámetro
-      this.obtenerItem();  // Cargar los detalles del item
+      this.item.id = +params['id'];
+      this.obtenerItem();
     });
   }
 
-  // Método para obtener los detalles del item desde el servidor
+
   obtenerItem(): void {
     this.itemRestService.getItemById(this.item.id).subscribe(
       (data) => {
@@ -53,12 +53,11 @@ export class ModificaritemComponent implements OnInit {
     );
   }
 
-  // Método para actualizar el item
   actualizarItem(): void {
     this.itemRestService.actualizarItem(this.item.id, this.item).subscribe(
       (data) => {
         console.log('Item actualizado:', data);
-        this.router.navigate(['/list-items']);  // Redirigir a la lista de items después de la actualización
+        this.router.navigate(['/list-items']);
       },
       (error) => {
         console.error('Error al actualizar el item:', error);
