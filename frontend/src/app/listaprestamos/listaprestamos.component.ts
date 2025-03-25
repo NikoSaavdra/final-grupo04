@@ -26,7 +26,7 @@ export class ListaprestamosComponent {
 
 
   trackById(index: number, item: any): number {
-    return item.id; // Asumimos que el identificador único es 'id'
+    return item.id;
   }
 
   devolverItem(id: number) {

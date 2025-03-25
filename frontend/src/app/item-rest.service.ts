@@ -4,6 +4,7 @@ import { Item } from './item';
 import { map, Observable } from 'rxjs';
 import { Prestamo } from './prestamo';
 import { ItemData } from './item-data';
+import { Tipo } from './tipo';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class ItemRestService {
         
           let trozosFechas:string[]=item.fechaAdquisicion.split("-");
           let fechaAdquisicion= new Date(parseInt(trozosFechas[0]),parseInt(trozosFechas[1])-1,parseInt(trozosFechas[2]));
-          return new Item(item.id,item.titulo,item.ubicacion,fechaAdquisicion,item.estado,item.tipoId,item.formato,{} as Prestamo)
+          return new Item(item.id,item.titulo,item.ubicacion,fechaAdquisicion,item.estado,item.tipoId,{}as Tipo,item.formato,{} as Prestamo)
         });
       })
     );

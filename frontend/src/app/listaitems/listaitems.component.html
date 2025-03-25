@@ -7,7 +7,6 @@
     <title>INICIO</title>
 
     <style>
-        /* Aquí tus estilos */
         html,
         body {
             background-color: rgb(233, 226, 209);
@@ -105,44 +104,34 @@
         }
 
         button{
-            gap: 20px; /* Establece la separación entre los botones */
+            gap: 20px;
             margin-bottom: 10px;
         }
 
         .btn-warning {
             background-color: #ffc107;
-            /* Color de fondo similar al color de advertencia de Bootstrap */
             color: white;
-            /* Color del texto (gris oscuro) */
             border: 1px solid #ffc107;
-            /* Borde del mismo color que el fondo */
             padding: 10px 20px;
-            /* Espaciado interno */
             font-size: 16px;
-            /* Tamaño de fuente */
             border-radius: 5px;
-            /* Bordes redondeados */
             cursor: pointer;
-            /* Cambia el cursor al pasar por encima */
             transition: background-color 0.3s, border-color 0.3s;
-            /* Efecto suave al pasar el ratón */
             margin-bottom: 10px;
 
         }
 
         .btn-warning:hover {
             background-color: #e0a800;
-            /* Color más oscuro al pasar el ratón */
             border-color: #e0a800;
-            /* Borde más oscuro */
+
 
         }
 
         .btn-warning:focus {
             outline: none;
-            /* Elimina el contorno por defecto al hacer clic */
             box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
-            /* Sombra de enfoque similar a la de Bootstrap */
+            
         }
     </style>
 </head>
@@ -186,10 +175,10 @@
                     <td><img src="icono_libro.png" class="img-fluid" alt="libro" width="25%"></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
-                    <td>{{ item.fechaadquisicion | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ item.fechaadquisicion | date: 'dd / MM / yyyy' }}</td>
                     <td>{{ item.ubicacion }}</td>
-                    <td>{{ item.estado }}</td>
-                    <td>{{ item.tipoId }}</td>
+                    <td>{{ item.estado  }}</td>
+                    <td>{{ getTipoNombre(item.tipo) }}</td>
                     <td>{{ item.formato }}</td>
                     <td><button class="btn btn-danger" (click)="borrar(item.id)">Borrar</button></td>
                 </tr>

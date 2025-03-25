@@ -4,6 +4,7 @@ import { ItemRestService } from '../item-rest.service';
 import { CommonModule, formatDate } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Tipo } from '../tipo';
 
 @Component({
   selector: 'app-listaitems',
@@ -32,7 +33,10 @@ export class ListaitemsComponent {
     trackById(index: number, item: any): any {
       return item.id;
     }
-
+    getTipoNombre(tipo: Tipo): string {
+      return tipo ? tipo.nombre : 'Desconocido';
+    }
+    
   obtenerEstado(tipoId: string): string {
     if (tipoId === 'libro') {
       return 'Disponible';
