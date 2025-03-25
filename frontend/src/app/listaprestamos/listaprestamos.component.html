@@ -34,7 +34,6 @@
             font-size: 2rem;
             color: #333;
             margin-bottom: 20px;
-            /* Espacio debajo del título */
         }
 
         body {
@@ -53,6 +52,7 @@
             overflow: hidden;
             width: 80%;
             max-width: 1100px;
+            margin-bottom: 10px;
         }
 
         table {
@@ -90,21 +90,56 @@
             border-bottom: 1px solid #ddd;
         }
 
-        button {
-            background-color: #f6a53b;
-            border-collapse: collapse;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
+
+        button{
+            gap: 20px; /* Establece la separación entre los botones */
+            margin-bottom: 10px;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            /* Color de fondo similar al color de advertencia de Bootstrap */
+            color: white;
+            /* Color del texto (gris oscuro) */
+            border: 1px solid #ffc107;
+            /* Borde del mismo color que el fondo */
+            padding: 10px 20px;
+            /* Espaciado interno */
+            font-size: 16px;
+            /* Tamaño de fuente */
+            border-radius: 5px;
+            /* Bordes redondeados */
+            cursor: pointer;
+            /* Cambia el cursor al pasar por encima */
+            transition: background-color 0.3s, border-color 0.3s;
+            /* Efecto suave al pasar el ratón */
+            margin-bottom: 10px;
+
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            /* Color más oscuro al pasar el ratón */
+            border-color: #e0a800;
+            /* Borde más oscuro */
+
+        }
+
+        .btn-warning:focus {
+            outline: none;
+            /* Elimina el contorno por defecto al hacer clic */
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+            /* Sombra de enfoque similar a la de Bootstrap */
         }
     </style>
 </head>
 
 
-<div class="row justify-content-md-center">
-    <p class="h2">MI COLECCIÓN</p>
-</div>
 
 <body>
+    <div class="row justify-content-md-center">
+        <p class="h2">PRÉSTAMOS ACTIVOS</p>
+    </div>
     <div class="table-container">
         <!-- Tabla de ordenadores -->
 
@@ -126,14 +161,14 @@
                     <td>{{ prestamo.fechaPrestamo }}</td>
                     <td>{{ prestamo.fechaPrevistaDevolucion }}</td>
                     <td>{{ prestamo.fechaDevolucion }}</td>
-                    <td><button class="button" (click)="devolverItem(prestamo.itemId)">Devolver</button></td>
+                    <td><button class="btn-warning" (click)="devolverItem(prestamo.itemId)">Devolver</button></td>
 </tr>
             </tbody>
         </table>
     </div>
-    <button class="button" routerLink="/crearprestamo">Resgistrar Nuevo Préstamo</button>
+    <button class="btn-warning" routerLink="/crearprestamo">Resgistrar Nuevo Préstamo</button>
     <br />
-    <button type="button" class="btn-custom" routerLink="/listaitems">Atrás</button>
+    <button type="button" class="btn-warning" routerLink="/listaitems">Atrás</button>
 </body>
 
 </html>

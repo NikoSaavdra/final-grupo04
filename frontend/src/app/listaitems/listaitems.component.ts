@@ -55,6 +55,7 @@ export class ListaitemsComponent {
   }
 
   buscar(): void {
+    if (this.tituloBusqueda || this.tipoBusqueda || this.ubicacionBusqueda) {
     this.itemRestService.buscarItems(this.tituloBusqueda, this.tipoBusqueda, this.ubicacionBusqueda).subscribe(
       (response: Item[]) => {
         this.listaItems = response;
@@ -64,4 +65,8 @@ export class ListaitemsComponent {
       }
     );
   }
+  else {
+    console.log('No se ha ingresado ningún parámetro para la búsqueda');
+  }
+}
 }

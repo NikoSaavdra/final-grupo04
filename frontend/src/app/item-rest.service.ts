@@ -39,13 +39,13 @@ export class ItemRestService {
     let params = new HttpParams();
 
     // Solo agregamos los parámetros si no son nulos o indefinidos
-    if (titulo) {
+    if (titulo && titulo.trim() !== '') {
       params = params.set('titulo', titulo);
     }
-    if (tipo) {
+    if (tipo && tipo.trim() !== '') {
       params = params.set('tipo', tipo);
     }
-    if (ubicacion) {
+    if (ubicacion && ubicacion.trim() !== '') {
       params = params.set('ubicacion', ubicacion);
     }
 

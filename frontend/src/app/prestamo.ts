@@ -5,9 +5,9 @@ export class Prestamo {
     constructor(
         public itemId:number,
         public persona:string,
-        public fechaPrestamo:Date |null,
-        public fechaPrevistaDevolucion:Date |null,
-        public fechaDevolucion:Date |null,
+        public fechaPrestamo:Date ,
+        public fechaPrevistaDevolucion:Date ,
+        public fechaDevolucion:Date,
         public activo:boolean,
     ){}
 }
