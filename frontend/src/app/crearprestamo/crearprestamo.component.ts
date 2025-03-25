@@ -6,31 +6,36 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-crearprestamo',
-  imports: [FormsModule,RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './crearprestamo.component.html',
   styleUrl: './crearprestamo.component.css'
 })
 export class CrearprestamoComponent {
 
-  prestamo: Prestamo={}as Prestamo;
+  prestamo: Prestamo = {} as Prestamo;
+  fechadev: any = { fechaPrevistaDevolucion: '2025-03-25' };
 
-  constructor(private prestamoRestService:PrestamoRestService, private router:Router){
-    }
-  public  crearPrestamo(){
-  const itemId = this.prestamo.itemId; // Asumiendo que prestamo es un objeto con un campo itemId
-  const persona = this.prestamo.persona;
-  let fechaPrevistaDevolucion = this.prestamo.fechaPrevistaDevolucion.toISOString();;
-
-  if (fechaPrevistaDevolucion) {
-    fechaPrevistaDevolucion = fechaPrevistaDevolucion; // Or use toLocaleDateString() if needed
-  } else {
-    fechaPrevistaDevolucion = ''; // Or handle null as needed (e.g., set an empty string or handle the error)
+  constructor(private prestamoRestService: PrestamoRestService, private router: Router) {
   }
 
-    this.prestamoRestService.crearPrestamo(itemId, persona, fechaPrevistaDevolucion).subscribe((datos)=>{
-        console.log("Prestamo insertado");
-        this.router.navigate(["/listaprestamos"]);
-      });
-  }
+  crearPrestamo(){
+      const itemId = this.prestamo.itemId;
+      const persona = this.prestamo.persona;
+      let fechadev: string | null = null;
+    
+      console.log(this.prestamo);
 
+      this.prestamoRestService.crearPrestamo(itemId, persona, this.fechadev).subscribe(
+        (datos) => {
+          console.log("Prestamo insertado", datos);
+          this.router.navigate(["/listaprestamos"]);
+        },
+        (error) => {
+          console.error('Error al crear el préstamo:', error);
+          if (error.error) {
+            console.error('Detalles del error:', error.error); // Aquí pueden aparecer detalles de la API
+          }
+        }
+      );
 }
+  }

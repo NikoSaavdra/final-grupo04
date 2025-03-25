@@ -16,10 +16,20 @@ export class PrestamoRestService {
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
   crearPrestamo(itemId: number, persona: string, fechaPrevistaDevolucion: string): Observable<Prestamo> {
+    // Verificar si la fecha es válida antes de enviarla
+    const fechaFormateada = this.convertirFechaCrear(fechaPrevistaDevolucion);
+    const fechaISO = fechaFormateada ? fechaFormateada.toISOString().split('T')[0] : ''; // Formato YYYY-MM-DD
+
+    // Si la fecha está vacía, asegurarse de enviar una cadena vacía o un valor adecuado
+    if (!fechaISO) {
+      console.error("Fecha no válida:", fechaPrevistaDevolucion);
+      // Se puede asignar un valor predeterminado o manejar el caso de error
+    }
+
     const params = new HttpParams()
       .set('itemId', itemId.toString())
       .set('persona', persona)
-      .set('fechaPrevistaDevolucion', fechaPrevistaDevolucion); // Asegúrate de enviar la fecha en formato adecuado
+      .set('fechaPrevistaDevolucion', fechaISO); // Asegúrate de enviar la fecha en formato adecuado
 
     // Realizamos la solicitud POST
     return this.http.post<Prestamo>(this.apiUrl, params, {
@@ -27,7 +37,7 @@ export class PrestamoRestService {
         'Content-Type': 'application/x-www-form-urlencoded', // Porque estamos enviando parámetros en la URL
       })
     });
-  }
+}
 
   devolverItem(id: number): Observable<Prestamo> {
     const url = `${this.apiUrl}/devolver/${id}`; // URL con el id del préstamo
@@ -74,7 +84,7 @@ export class PrestamoRestService {
       })
     )
   }
-  private convertirFecha(fecha: string | null): Date | null {
+  public convertirFecha(fecha: string | null): Date | null {
     // Verificar si la fecha es nula o vacía antes de procesarla
     if (fecha && fecha.trim() !== '') {
       let trozosFechas: string[] = fecha.split("-");
@@ -85,4 +95,14 @@ export class PrestamoRestService {
     }
     return null;  // Si la fecha es nula o no tiene el formato adecuado, devolvemos null
   }
+
+private convertirFechaCrear (fecha: string | null): Date | null {
+  if (fecha && typeof fecha === 'string' && fecha.trim() !== '') {
+    let trozosFechas: string[] = fecha.split("-");
+    if (trozosFechas.length === 3) {
+      return new Date(parseInt(trozosFechas[0]), parseInt(trozosFechas[1]) - 1, parseInt(trozosFechas[2]));
+    }
+  }
+  return null; // Si la fecha no es válida, retornar null
+}
 }
