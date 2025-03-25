@@ -132,7 +132,6 @@
         <table class="table">
             <thead class="table-warning">
                 <tr>
-                    <th class="col">Id</th>
                     <th class="col">Persona en Préstamo</th>
                     <th class="col">Fecha Préstamo</th>
                     <th class="col">Fecha de Devolución Prevista</th>
@@ -142,7 +141,6 @@
             </thead>
             <tbody>
                 <tr *ngFor="let prestamo of listaPrestamosActivos">
-                    <td>{{ prestamo.itemId }}</td>
                     <td>{{ prestamo.persona }}</td>
                     <td>{{ prestamo.fechaPrestamo | date: 'dd / MM / yyyy'}}</td>
                     <td>{{ prestamo.fechaPrevistaDevolucion | date: 'dd / MM / yyyy'}}</td>

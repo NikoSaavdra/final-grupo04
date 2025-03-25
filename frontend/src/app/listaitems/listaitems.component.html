@@ -161,11 +161,10 @@
             <thead class="table-warning">
                 <tr>
                     <th class="col"></th>
-                    <th class="col">Id</th>
                     <th class="col">Título</th>
                     <th class="col">Fecha Adquisición</th>
                     <th class="col">Ubicación</th>
-                    <th class="col">Estado</th>
+                    <th class="col">Disponible</th>
                     <th class="col">Formato</th>
                     <th class="col">🗑️</th>
                     <th class="col">📝</th>
@@ -174,7 +173,6 @@
             <tbody>
                 <tr *ngFor="let item of listaItems; trackBy: trackById">
                     <td><img src="icono_libro.png" class="img-fluid" alt="libro" width="25%"></td>
-                    <td>{{ item.id }}</td>
                     <td>{{ item.titulo }}</td>
                     <td>{{ item.fechaadquisicion | date: 'dd / MM / yyyy' }}</td>
                     <td>{{ item.ubicacion }}</td>
