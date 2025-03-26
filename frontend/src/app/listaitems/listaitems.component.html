@@ -147,9 +147,9 @@
         <input type="text" [(ngModel)]="tituloBusqueda" placeholder="Buscar por título" />
         <select [(ngModel)]="tipoBusqueda">
             <option value="">Todos</option>
-            <option value="2">Libro</option>
-            <option value="1">Película</option>
-            <option value="3">CD</option>
+            <option value="Libro">Libro</option>
+            <option value="Pelicula">Película</option>
+            <option value="cd">CD</option>
         </select>
         <input type="text" [(ngModel)]="ubicacionBusqueda" placeholder="Buscar por ubicación" />
         <button class="btn btn-warning" (click)="buscar()">Buscar</button>
