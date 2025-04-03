@@ -1,41 +1,98 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { Prestamo } from '../prestamo';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { PrestamoRestService } from '../prestamo-rest.service';
+import { ItemRestService } from '../item-rest.service';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
+
+declare const bootstrap: any;
+
+interface Prestamo {
+  itemId: number;
+  persona: string;
+  fechaPrevistaDevolucion: string;
+}
+
+interface ItemResumen {
+  id: number;
+  titulo: string;
+}
 
 @Component({
   selector: 'app-crearprestamo',
-  imports: [FormsModule, RouterLink],
   templateUrl: './crearprestamo.component.html',
-  styleUrl: './crearprestamo.component.css'
+  styleUrls: ['./crearprestamo.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
-export class CrearprestamoComponent {
+export class CrearprestamoComponent implements OnInit {
 
-  prestamo: Prestamo = {} as Prestamo;
-  fechadev: any = { fechaPrevistaDevolucion: '2025-03-25' };
+  prestamo: Prestamo = {
+    itemId: 0,
+    persona: '',
+    fechaPrevistaDevolucion: ''
+  };
 
-  constructor(private prestamoRestService: PrestamoRestService, private router: Router) {
+  itemsDisponibles: ItemResumen[] = [];
+  nombreItemSeleccionado: string = '';
+  modalExito: any;
+
+  @ViewChild('confirmarModalElement') confirmarModalElement!: ElementRef;
+  @ViewChild('exitoModalElement') exitoModalElement!: ElementRef;
+
+  constructor(
+    private prestamoRestService: PrestamoRestService,
+    private itemRestService: ItemRestService,
+    private router: Router,
+    private location: Location
+  ) {}
+
+  ngOnInit(): void {
+    this.itemRestService.listarItemsDisponibles().subscribe({
+      next: (items) => this.itemsDisponibles = items,
+      error: (err) => console.error('Error al cargar ítems disponibles:', err)
+    });
   }
 
-  crearPrestamo(){
-      const itemId = this.prestamo.itemId;
-      const persona = this.prestamo.persona;
-      let fechadev: string | null = null;
-    
-      console.log(this.prestamo);
+  abrirModal(): void {
+    const seleccionado = this.itemsDisponibles.find(item => item.id === Number(this.prestamo.itemId));
+    this.nombreItemSeleccionado = seleccionado ? seleccionado.titulo : 'No seleccionado';
 
-      this.prestamoRestService.crearPrestamo(itemId, persona, this.fechadev).subscribe(
-        (datos) => {
-          console.log("Prestamo insertado", datos);
-          this.router.navigate(["/listaprestamos"]);
-        },
-        (error) => {
-          console.error('Error al crear el préstamo:', error);
-          if (error.error) {
-            console.error('Detalles del error:', error.error);
-          }
-        }
-      );
+    const modal = new bootstrap.Modal(this.confirmarModalElement.nativeElement);
+    modal.show();
+  }
+
+  confirmarRegistro(): void {
+    this.prestamoRestService.crearPrestamo(this.prestamo).subscribe({
+      next: () => {
+        // Cierra el modal de confirmación
+        bootstrap.Modal.getInstance(this.confirmarModalElement.nativeElement)?.hide();
+
+        // Abre modal de éxito
+        this.modalExito = new bootstrap.Modal(this.exitoModalElement.nativeElement);
+        this.modalExito.show();
+      },
+      error: (err) => console.error('Error al crear el préstamo:', err)
+    });
+  }
+
+  cerrarModalExito(): void {
+    if (this.modalExito) {
+      this.modalExito.hide();
+    }
+  
+    // Limpiar el formulario
+    this.prestamo = {
+      itemId: 0,
+      persona: '',
+      fechaPrevistaDevolucion: ''
+    };
+    this.nombreItemSeleccionado = '';
+  }
+  
+  goBack(): void {
+    this.location.back();
+  }
+  
 }
-  }

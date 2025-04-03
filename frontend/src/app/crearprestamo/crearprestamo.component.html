@@ -1,121 +1,115 @@
-<!DOCTYPE html>
-<html lang="es">
+<!-- Formulario -->
+<div class="container mt-5">
+  <h2 class="text-center text-primary mb-4">📄 Registrar Préstamo</h2>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca personal</title>
+  <form #prestamoForm="ngForm" class="shadow p-4 bg-white rounded border border-2">
+    <div class="mb-3">
+      <label class="form-label fw-semibold">📚 Selecciona un artículo</label>
+      <select
+        class="form-select"
+        name="itemId"
+        required
+        [(ngModel)]="prestamo.itemId">
+        <option [ngValue]="0" disabled selected>-- Selecciona un ítem --</option>
+        <option *ngFor="let item of itemsDisponibles" [ngValue]="item.id">
+          {{ item.titulo }}
+        </option>
+      </select>
+    </div>
 
-    <style>
-        html,
-        body {
-            background-color: rgb(233, 226, 209);
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    <div class="mb-3">
+      <label class="form-label fw-semibold">👤 Persona que lo recibe</label>
+      <input
+        type="text"
+        class="form-control"
+        name="persona"
+        [(ngModel)]="prestamo.persona"
+        placeholder="Nombre completo"
+        required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold">📅 Fecha de Devolución</label>
+      <input
+        type="date"
+        class="form-control"
+        name="fechaPrevistaDevolucion"
+        [(ngModel)]="prestamo.fechaPrevistaDevolucion"
+        required>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-success px-4" (click)="abrirModal()">Registrar Préstamo</button>
+      <button type="button" class="btn btn-outline-secondary px-4" (click)="goBack()">
+        ← Atrás
+      </button>      
+    </div>
+  </form>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmarModal" tabindex="-1" #confirmarModalElement>
+  <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- más ancho -->
+    <div class="modal-content border-0 shadow-lg fs-5"> <!-- fuente más grande -->
+      <div class="modal-header bg-success text-white">
+        <h4 class="modal-title fw-bold">✅ Confirmar Registro de Préstamo</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body px-4 py-3">
+        <p class="mb-4">¿Estás seguro de que deseas registrar este préstamo?</p>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-secondary">📚 Artículo:</span>
+            <span>{{ nombreItemSeleccionado }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-secondary">👤 Persona:</span>
+            <span>{{ prestamo.persona }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-secondary">📅 Devolver el:</span>
+            <span>{{ prestamo.fechaPrevistaDevolucion | date:'dd/MM/yyyy' }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer px-4 py-3">
+        <button class="btn btn-outline-secondary btn-lg" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-success btn-lg px-4" (click)="confirmarRegistro()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-        form {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-        }
+<!-- Modal de Éxito -->
+<div class="modal fade" id="exitoModal" tabindex="-1" #exitoModalElement>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg fs-5">
+      <div class="modal-header bg-info text-white">
+        <h4 class="modal-title fw-bold">✅ Préstamo creado con éxito</h4>
+        <button type="button" class="btn-close btn-close-white" (click)="cerrarModalExito()" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body px-4 py-3">
+        <p class="mb-4">El préstamo fue registrado correctamente con los siguientes datos:</p>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-secondary">📚 Artículo:</span>
+            <span>{{ nombreItemSeleccionado }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-secondary">👤 Persona:</span>
+            <span>{{ prestamo.persona }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="fw-semibold text-secondary">📅 Devolver el:</span>
+            <span>{{ prestamo.fechaPrevistaDevolucion | date:'dd/MM/yyyy' }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer px-4 py-3">
+        <button class="btn btn-primary btn-lg px-4" data-bs-dismiss="modal" (click)="cerrarModalExito()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        .form-label {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .form-control {
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            font-size: 1rem;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .form-check-input {
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
-        }
-
-        .mb-3 {
-            margin-bottom: 15px;
-        }
-
-        .btn-custom {
-            background-color: #f6a53b;
-            color: white;
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            border-radius: 30px;
-            border: none;
-            width: 100%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-bottom: 10px;
-        }
-
-        .btn-custom:hover {
-            background-color: #e6952e;
-        }
-    </style>
-</head>
-
-<body>
-        
-    <form (ngSubmit)="crearPrestamo()" #prestamoForm="ngForm">
-        <div class="form-group">
-            <label for="itemId">ID del Item</label>
-            <input
-              type="number"
-              id="itemId"
-              name="itemId"
-              [(ngModel)]="prestamo.itemId"
-              class="form-control"
-              required
-            />
-          </div>
-      
-          <div class="form-group">
-            <label for="persona">Persona</label>
-            <input
-              type="text"
-              id="persona"
-              name="persona"
-              [(ngModel)]="prestamo.persona"
-              class="form-control"
-              required
-            />
-          </div>
-      
-          <div class="form-group">
-            <label for="fechaPrevistaDevolucion">Fecha Prevista de Devolución</label>
-            <input
-              type="date"
-              id="fechaPrevistaDevolucion"
-              name="fechaPrevistaDevolucion"
-              [(ngModel)]="prestamo.fechaPrevistaDevolucion"
-              class="form-control"
-              required
-            />
-          </div>
-      
-          <button type="submit" class="btn-custom" (click)="crearPrestamo()">Registrar Préstamo</button>
-          <button class="btn-custom" routerLink="/listaprestamos">Atrás</button>
-        </form>
-      </body>
-      </html>

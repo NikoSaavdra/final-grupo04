@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,16 +88,27 @@ public class PrestamoService {
     }
 
     /**
-     * Lista los préstamos activos, filtrando por persona o fecha.
+     * Lista los préstamos activos, filtrando por persona y/o por un rango de
+     * fechas. Si se pasan ambos filtros, se aplican en conjunto.
      */
-    public List<PrestamoResponseDTO> listarPrestamosActivos(String persona, LocalDate fecha) {
+    public List<PrestamoResponseDTO> listarPrestamosActivos(String persona,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta) {
+
         List<Prestamo> prestamos;
 
-        if (persona != null && !persona.isBlank()) {
+        if (persona != null && !persona.isBlank() && fechaDesde != null && fechaHasta != null) {
+            // Filtrar por persona y por rango de fechas
+            prestamos = prestamoRepository.findByPersonaAndFechaPrestamoBetweenAndActivoTrue(
+                    persona, fechaDesde, fechaHasta);
+        } else if (persona != null && !persona.isBlank()) {
+            // Filtrar solo por persona
             prestamos = prestamoRepository.findByPersonaAndActivoTrue(persona);
-        } else if (fecha != null) {
-            prestamos = prestamoRepository.findByFechaPrestamoAndActivoTrue(fecha);
+        } else if (fechaDesde != null && fechaHasta != null) {
+            // Filtrar solo por rango de fechas
+            prestamos = prestamoRepository.findByFechaPrestamoBetweenAndActivoTrue(fechaDesde, fechaHasta);
         } else {
+            // Sin filtros: todos los activos
             prestamos = prestamoRepository.findByActivoTrue();
         }
 
@@ -123,4 +135,19 @@ public class PrestamoService {
                 itemsDTO
         );
     }
+
+    public List<PrestamoResponseDTO> listarTodos() {
+        List<Prestamo> prestamos = prestamoRepository.findAll();
+
+        return prestamos.stream().map(p -> new PrestamoResponseDTO(
+                p.getId(),
+                p.getPersona(),
+                p.getFechaPrestamo(),
+                p.getFechaPrevistaDevolucion(),
+                p.getFechaDevolucion(),
+                p.isActivo(), // ← ahora funciona
+                null // o p.getItems() si tenés relación mapeada
+        )).collect(Collectors.toList());
+    }
+
 }

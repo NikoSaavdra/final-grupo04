@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +50,7 @@ public class ItemService {
         System.out.println("*********");
         Formato formato = tipo.getFormato().stream()
                 .peek(System.out::println)
-                .filter(f -> f.getId().equals(Long.parseLong(itemDTO.getFormato())))
+                .filter(f -> f.getNombre().equalsIgnoreCase(itemDTO.getFormato()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Formato no válido para el tipo seleccionado"));
 
@@ -80,22 +82,22 @@ public class ItemService {
     @Transactional(readOnly = true)
     public List<ItemResponseDTO> buscarItems(String titulo, String tipo, String ubicacion, String ordenarPor) {
         // Validar parámetro de ordenación
-        List<ItemResponseDTO> items = listarItemDisponibles(); 
+        List<ItemResponseDTO> items = listarItemDisponibles();
         Sort sort = Sort.unsorted();
         if (titulo != null && !titulo.isEmpty()) {
             items = items.stream()
-                         .filter(item -> item.getTitulo().contains(titulo))
-                         .collect(Collectors.toList());
+                    .filter(item -> item.getTitulo().contains(titulo))
+                    .collect(Collectors.toList());
         }
         if (tipo != null && !tipo.isEmpty()) {
             items = items.stream()
-                         .filter(item -> item.getTipo().contains(tipo))
-                         .collect(Collectors.toList());
+                    .filter(item -> item.getTipo().contains(tipo))
+                    .collect(Collectors.toList());
         }
         if (ubicacion != null && !ubicacion.isEmpty()) {
             items = items.stream()
-                         .filter(item -> item.getUbicacion().contains(ubicacion))
-                         .collect(Collectors.toList());
+                    .filter(item -> item.getUbicacion().contains(ubicacion))
+                    .collect(Collectors.toList());
         }
 
         return itemRepository.buscarPorCriterios(titulo, tipo, ubicacion, sort).stream()
@@ -139,16 +141,27 @@ public class ItemService {
                 item.isEstado(),
                 item.getTipo().getNombre(),
                 item.getFormato().getNombre(),
-                item.getFechaADquisicion()
+                item.getFechaAdquisicion()
         );
     }
 
     @Transactional
     public void eliminarItem(Long id) {
-        if (!itemRepository.existsById(id)) {
-            throw new RuntimeException("El ítem con ID " + id + " no existe.");
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El ítem con ID " + id + " no existe."));
+
+        if (!item.isEstado()) { // estado = false → prestado
+            throw new RuntimeException("No se puede eliminar un ítem con préstamo activo.");
         }
-        itemRepository.deleteById(id);
+
+        itemRepository.delete(item);
+    }
+
+    public Page<ItemResponseDTO> buscarItemsPaginado(String titulo, String tipo, String ubicacion, Pageable pageable) {
+        Page<Item> page = itemRepository.findByTituloContainingIgnoreCaseAndTipo_NombreContainingIgnoreCaseAndUbicacionContainingIgnoreCase(
+                titulo, tipo, ubicacion, pageable
+        );
+        return page.map(this::convertirADTO);
     }
 
 }

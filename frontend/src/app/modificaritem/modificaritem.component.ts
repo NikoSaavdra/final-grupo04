@@ -1,68 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Item } from '../item';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ItemRestService } from '../item-rest.service';
-import { Tipo } from '../tipo';
-import { Prestamo } from '../prestamo';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-modificaritem',
-  imports: [FormsModule,RouterLink,CommonModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './modificaritem.component.html',
-  styleUrl: './modificaritem.component.css'
+  styleUrls: ['./modificaritem.component.css']
 })
 export class ModificaritemComponent implements OnInit {
-  item: Item = {
+  @Output() itemActualizado = new EventEmitter<Item>();
+  
+  @Input() item: Item = {
     id: 0,
     titulo: '',
     ubicacion: '',
-    fechaadquisicion: new Date,
+    fechaAdquisicion: new Date().toISOString().split('T')[0],
     estado: true,
     formato: '',
-    prestamo: {} as Prestamo,
+    prestamo: null!,
     tipoId: 0
   };
+
   errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private itemRestService: ItemRestService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
-    this.route.params.subscribe(params => {
-      this.item.id = +params['id'];
-      this.obtenerItem();
-    });
-  }
-
-
-  obtenerItem(): void {
-    this.itemRestService.getItemById(this.item.id).subscribe(
-      (data) => {
-        this.item = data;
-      },
-      (error) => {
-        console.error('Error al obtener el item:', error);
-        this.errorMessage = 'No se pudo cargar el item';
-      }
-    );
+    if (!this.item || !this.item.id) {
+      console.warn("⚠️ El ítem recibido no tiene un ID válido:", this.item);
+    }
   }
 
   actualizarItem(): void {
-    this.itemRestService.actualizarItem(this.item.id, this.item).subscribe(
-      (data) => {
-        console.log('Item actualizado:', data);
-        this.router.navigate(['/list-items']);
+    this.itemRestService.actualizarItem(this.item.id, this.item).subscribe({
+      next: (data) => {
+        console.log('✅ Item actualizado:', data);
+        this.itemActualizado.emit(data);
+        this.cerrarModal();
       },
-      (error) => {
-        console.error('Error al actualizar el item:', error);
-        this.errorMessage = 'Error al actualizar el item';
+      error: (error) => {
+        console.error('❌ Error al actualizar el ítem:', error);
+        this.errorMessage = 'Error al actualizar el ítem';
       }
-    );
+    });
+  }
+
+  cerrarModal(): void {
+    const modalElement = document.getElementById('modificarItemModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+    }
   }
 }

@@ -118,7 +118,7 @@ public class Item {
         this.formato = formato;
     }
 
-    public LocalDate getFechaADquisicion() {
+    public LocalDate getFechaAdquisicion() {
         return FechaAdquisicion;
     }
 

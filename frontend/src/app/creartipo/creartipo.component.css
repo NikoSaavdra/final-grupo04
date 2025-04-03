@@ -1,0 +1,58 @@
+/* Contenedor principal */
+.container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título */
+  h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #007bff;
+  }
+  
+  /* Etiquetas de campo */
+  .form-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Inputs grandes */
+  .form-control-lg {
+    font-size: 1.1rem;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+  }
+  
+  /* Checkbox etiquetas */
+  .form-check-label {
+    font-size: 1.1rem;
+  }
+  
+  /* Botón volver */
+  .btn-outline-secondary {
+    font-size: 1rem;
+    padding: 10px 18px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  /* Botón crear */
+  .btn-success {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  

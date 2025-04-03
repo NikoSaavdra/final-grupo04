@@ -5,6 +5,13 @@ import { map, Observable } from 'rxjs';
 import { Prestamo } from './prestamo';
 import { ItemData } from './item-data';
 import { Tipo } from './tipo';
+import { ItemDTO } from './ItemDTO';
+
+export interface ItemResumen {
+  id: number;
+  titulo: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +19,14 @@ import { Tipo } from './tipo';
 export class ItemRestService {
 
   private apiUrl = "http://localhost:4200/api/item";
+  
 
   constructor(private http: HttpClient) { }
 
-  
+  // Obtener todos los ítems disponibles
+  listarItemsDisponibles(): Observable<ItemResumen[]> {
+    return this.http.get<ItemResumen[]>(`${this.apiUrl}`);
+  }
 
   listarItems(): Observable<Item[]> {
     return this.http.get<ItemData[]>(this.apiUrl).pipe(
@@ -25,16 +36,17 @@ export class ItemRestService {
         
           let trozosFechas:string[]=item.fechaAdquisicion.split("-");
           let fechaAdquisicion= new Date(parseInt(trozosFechas[0]),parseInt(trozosFechas[1])-1,parseInt(trozosFechas[2]));
-          return new Item(item.id,item.titulo,item.ubicacion,fechaAdquisicion,item.estado,item.tipoId,item.formato,{} as Prestamo)
+          return new Item(item.id,item.titulo,item.ubicacion,item.fechaAdquisicion,item.estado,item.tipoId,item.formato,{} as Prestamo)
         });
       })
     );
   }
   
 
-  public crearItem(item: Item): Observable<Item> {
-    return this.http.post<Item>(this.apiUrl, item)
+  public crearItem(item: ItemDTO): Observable<Item> {
+    return this.http.post<Item>(this.apiUrl, item);
   }
+  
 
   buscarItems(titulo?: string, tipo?: string, ubicacion?: string, ordenarPor: string = 'titulo'): Observable<Item[]> {
     let params = new HttpParams();
@@ -77,4 +89,23 @@ export class ItemRestService {
       }),
     });
   }
+
+  buscarItemsPaginado(
+    titulo: string = '',
+    tipo: string = '',
+    ubicacion: string = '',
+    page: number = 0,
+    size: number = 5
+  ): Observable<any> {
+    const params = {
+      titulo,
+      tipo,
+      ubicacion,
+      page,
+      size
+    };
+  
+    return this.http.get<any>(`${this.apiUrl}/buscar`, { params });
+  }
+  
 }

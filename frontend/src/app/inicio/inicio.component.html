@@ -1,69 +1,16 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INICIO</title>
+<div class="inicio-container py-5 d-flex justify-content-center">
+  <div class="card-inicio shadow-lg p-5 rounded text-center bg-white" style="max-width: 500px;">
+    <h2 class="titulo mb-4 display-5 text-primary fw-bold">📚 Colección Personal</h2>
 
-    <style>
-        html, body {
-            background-color: rgb(233, 226, 209);
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-        }
+    <img src="iconoperfil.jpg" alt="imagen de perfil" class="perfil rounded-circle mb-4" style="width: 150px; height: 150px;" />
 
-        .contenido {
-            padding: 90px;
-            margin-top: 70px;
-            border-radius: 10px;
-            text-align: center;
-            background-color: white;
-        }
-
-        .h2 {
-            font-family: sans-serif;
-            font-size: 3rem;
-            color: #333;
-        }
-
-        img {
-            width: 150px;
-            height: auto;
-            border-radius: 50%;
-        }
-        .btn-custom {
-            background-color: #f6a53b;
-            color: white;
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            border-radius: 30px;
-            border: none;
-            width: 100%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-custom:hover {
-            background-color: #e6952e;
-        }
-
-    </style>
-</head>
-<body>
-    <div class="contenido">
-        <h2 class="h2">COLECCIÓN PERSONAL</h2>
-
-        <p><img src="iconoperfil.jpg" class="img-fluid" alt="imagendeperfil"></p>
-        <button class="btn-custom" routerLink="/listaitems">Acceder</button>
-        
+    <div class="botones d-grid gap-3">
+      <button class="btn btn-outline-primary btn-lg py-3 fs-5" routerLink="/crearprestamo">📥 Crear Préstamo</button>
+      <button class="btn btn-outline-success btn-lg py-3 fs-5" routerLink="/creartipo">🎨 Crear Tipo</button>
+      <button class="btn btn-outline-info btn-lg py-3 fs-5" routerLink="/listatipos">📋 Listar Tipos</button>
+      <button class="btn btn-outline-dark btn-lg py-3 fs-5" routerLink="/listaitems">📦 Lista de Ítems</button>
+      <button class="btn btn-outline-warning btn-lg py-3 fs-5" routerLink="/listaprestamos">🔍 Ver Préstamos Activos</button>
+      <button class="btn btn-outline-secondary btn-lg py-3 fs-5" routerLink="/listahistorial">📜 Ver Historial de Préstamos</button>
     </div>
-</body>
-</html>
-
-
+  </div>
+</div>

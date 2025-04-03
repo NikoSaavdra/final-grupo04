@@ -1,0 +1,157 @@
+/* Fondo general */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#modalNoEliminar .modal-dialog {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#visualizarModal .modal-dialog {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Encabezado */
+h2 {
+  font-size: 2.5rem;
+  color: #0d6efd;
+  font-weight: 700;
+}
+
+/* Tabla */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background-color: #212529;
+  color: #ffffff;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table img {
+  border-radius: 8px;
+}
+
+/* Botones */
+button.btn {
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+button.btn:hover {
+  transform: scale(1.05);
+}
+
+/* Botón Buscar */
+.btn-warning {
+  background-color: #f7b733;
+  border: none;
+  color: #fff;
+}
+
+.btn-warning:hover {
+  background-color: #f39c12;
+}
+
+/* Botón Insertar / Atrás */
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Botones pequeños de acciones */
+.btn-outline-info {
+  color: #0dcaf0;
+  border-color: #0dcaf0;
+}
+
+.btn-outline-primary {
+  color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-info:hover,
+.btn-outline-primary:hover,
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: currentColor;
+  border-color: currentColor;
+}
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  button.btn {
+    font-size: 0.95rem;
+  }
+}
+
+/* Estilo para los controles de paginación */
+.pagination {
+  font-size: 1rem;
+}
+
+.page-item {
+  margin: 0 2px;
+}
+
+.page-item .page-link {
+  border-radius: 8px;
+  color: #343a40;
+  border: 1px solid #dee2e6;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.page-item.active .page-link {
+  background-color: #f6a53b;
+  color: white;
+  border-color: #f6a53b;
+}
+
+.page-item .page-link:hover {
+  background-color: #ffe8c6;
+  color: #000;
+}
+
+.page-item.disabled .page-link {
+  color: #999;
+  pointer-events: none;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}

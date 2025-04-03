@@ -2,6 +2,8 @@ package es.santander.ascender.final_grupo04.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             @Param("tipo") String tipo,
             @Param("ubicacion") String ubicacion,
             Sort sort);
+
+    Page<Item> findByTituloContainingIgnoreCaseAndTipo_NombreContainingIgnoreCaseAndUbicacionContainingIgnoreCase(
+            String titulo, String tipo, String ubicacion, Pageable pageable);
+
 }

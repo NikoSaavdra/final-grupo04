@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +43,18 @@ public class PrestamoController {
     }
 
     @GetMapping("/activos")
-    public ResponseEntity<List<PrestamoResponseDTO>> listarPrestamosActivos(@RequestParam(required = false) String persona,
-            @RequestParam(required = false) LocalDate fecha) {
-        List<PrestamoResponseDTO> prestamos = prestamoService.listarPrestamosActivos(persona, fecha);
+    public ResponseEntity<List<PrestamoResponseDTO>> listarPrestamosActivos(
+            @RequestParam(required = false) String persona,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta) {
+        List<PrestamoResponseDTO> prestamos = prestamoService.listarPrestamosActivos(persona, fechaDesde, fechaHasta);
         return new ResponseEntity<>(prestamos, HttpStatus.OK);
+    }
+
+    @GetMapping("/historial")
+    public ResponseEntity<List<PrestamoResponseDTO>> listarHistorialCompleto() {
+        List<PrestamoResponseDTO> historial = prestamoService.listarTodos();
+        return new ResponseEntity<>(historial, HttpStatus.OK);
     }
 
 }

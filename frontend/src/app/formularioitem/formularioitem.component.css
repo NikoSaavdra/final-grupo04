@@ -1,0 +1,41 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f3f4f6;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 12px;
+  }
+  
+  h3 {
+    font-size: 1.8rem;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  
+  .btn-secondary {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  input,
+  select {
+    font-size: 0.95rem;
+  }
+  

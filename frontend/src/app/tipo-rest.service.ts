@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Tipo } from './tipo';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { TipoDTO, TipoFormatoDTO } from './tipo.dto'; // ← ambos DTOs
 
 @Injectable({
   providedIn: 'root'
@@ -10,44 +10,28 @@ export class TipoRestService {
 
   private apiUrl = 'http://localhost:4200/api/tipo';
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  crearTipo(tipo: Tipo): Observable<Tipo> {
-    const url = `${this.apiUrl}`;
+  crearTipo(tipo: TipoDTO): Observable<TipoDTO> {
+    return this.http.post<TipoDTO>(this.apiUrl, tipo);
+  }
 
+  listarTipos(): Observable<TipoFormatoDTO[]> {
+    return this.http.get<TipoFormatoDTO[]>(this.apiUrl); // ← sin /listar
+  }
 
-    return this.httpClient.post<Tipo>(url, tipo, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
+  actualizarTipo(id: number, nuevoNombre: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, nuevoNombre, {
+      headers: { 'Content-Type': 'application/json' }
     });
   }
-
-  listarTipos(): Observable<Tipo[]> {
-    return this.httpClient.get<Tipo[]>(this.apiUrl);
+  
+  eliminarTipo(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  actualizarTipo(id: number, nombre: string): Observable<Tipo> {
-    const url = `${this.apiUrl}/${id}`;
-
-
-    return this.httpClient.put<Tipo>(url, { nombre }, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    });
+  obtenerTipos(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
-
-
-  eliminarTipo(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`;
-
-
-    return this.httpClient.delete<void>(url, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    });
-  }
-
+  
 }

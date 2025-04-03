@@ -1,6 +1,7 @@
 export class PrestamoData {
 
         constructor(
+            public id: number, 
             public itemId:number,
             public persona:string,
             public fechaPrestamo:string,

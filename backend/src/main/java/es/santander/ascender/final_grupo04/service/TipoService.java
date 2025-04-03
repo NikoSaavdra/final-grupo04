@@ -101,9 +101,14 @@ public class TipoService {
 
     @Transactional
     public void eliminarTipo(Long id) {
-        if (!tipoRepository.existsById(id)) {
-            throw new RuntimeException("Tipo no encontrado");
+        Tipo tipo = tipoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tipo no encontrado"));
+
+        if (tipo.getItems() != null && !tipo.getItems().isEmpty()) {
+            throw new IllegalStateException("No se puede eliminar el tipo porque tiene ítems asociados.");
         }
-        tipoRepository.deleteById(id);
+
+        tipoRepository.delete(tipo);
     }
+
 }
