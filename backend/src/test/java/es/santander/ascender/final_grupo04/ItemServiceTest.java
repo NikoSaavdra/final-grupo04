@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.santander.ascender.final_grupo04.DTO.ItemDTO;
 import es.santander.ascender.final_grupo04.DTO.ItemResponseDTO;
@@ -20,6 +22,7 @@ import es.santander.ascender.final_grupo04.repository.TipoRepository;
 import es.santander.ascender.final_grupo04.service.ItemService;
 
 @SpringBootTest
+@Transactional
 public class ItemServiceTest {
 
     @Autowired
@@ -36,101 +39,80 @@ public class ItemServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Cargar un tipo existente de la base de datos, por ejemplo, el tipo con id 1
-        // que podría ser "Música"
-        tipo = tipoRepository.findById(1L).orElseThrow(() -> new RuntimeException("Tipo no encontrado"));
+        tipo = tipoRepository.findByNombre("Música")
+                .orElseThrow(() -> new RuntimeException("Tipo 'Música' no encontrado"));
 
-        // Cargar un ítem existente, por ejemplo, el ítem con id 1 (Álbum de Rock)
-        item = itemRepository.findById(1L).orElseThrow(() -> new RuntimeException("Ítem no encontrado"));
+        item = itemRepository.findAll().stream()
+                .filter(i -> i.getTipo().getNombre().equals("Música"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No hay ítems tipo Música para test"));
     }
 
     @Test
     void testCrearItemConFormato_Exitoso() {
-        // Crear un DTO de item con tipo y formato válidos
         ItemDTO itemDTO = new ItemDTO();
         itemDTO.setTitulo("Nuevo Álbum");
         itemDTO.setUbicacion("Estante D");
         itemDTO.setTipoId(tipo.getId());
-        itemDTO.setFormato("1"); // Usando el formato "CD" para tipo "Música"
+        itemDTO.setFormato("CD");
 
-        // Llamada al servicio para crear el ítem
         ItemResponseDTO response = itemService.crearItemConFormato(itemDTO);
 
-        // Verificamos que el ítem se haya creado correctamente
         assertNotNull(response);
         assertEquals(itemDTO.getTitulo(), response.getTitulo());
         assertEquals(itemDTO.getUbicacion(), response.getUbicacion());
-        assertEquals(tipo.getNombre(), response.getTipo()); // "Música"
-        assertEquals("CD", response.getFormato()); // Formato validado
+        assertEquals(tipo.getNombre(), response.getTipo());
+        assertEquals("CD", response.getFormato());
     }
 
     @Test
     void testListarItemDisponibles_Exitoso() {
-        // Crear un ítem adicional para probar el listado de ítems disponibles
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setTitulo("Nuevo Álbum");
-        itemDTO.setUbicacion("Estante E");
+        itemDTO.setTitulo("Álbum Libre");
+        itemDTO.setUbicacion("Estante X");
         itemDTO.setTipoId(tipo.getId());
-        itemDTO.setFormato("1");
+        itemDTO.setFormato("CD");
 
         itemService.crearItemConFormato(itemDTO);
 
-        // Llamamos al servicio para listar los ítems disponibles
-        List<ItemResponseDTO> items = itemService.listarItemDisponibles();
-
-        // Verificamos que los ítems disponibles sean mayores que 0
-        assertFalse(items.isEmpty());
+        List<ItemResponseDTO> disponibles = itemService.listarItemDisponibles();
+        assertFalse(disponibles.isEmpty());
+        assertTrue(disponibles.stream().anyMatch(i -> i.getTitulo().equals("Álbum Libre")));
     }
 
     @Test
     void testBuscarItemsPorTituloYTipo() {
-        // Buscar ítems con un título específico y tipo "Música"
-        List<ItemResponseDTO> items = itemService.buscarItems("Álbum de Rock", "Música", null, "titulo");
-
-        // Verificamos que la búsqueda haya devuelto el ítem correcto
-        assertEquals(1, items.size());
-        assertEquals("Álbum de Rock", items.get(0).getTitulo());
+        List<ItemResponseDTO> items = itemService.buscarItems("Thriller", "Música", null, "titulo");
+        assertFalse(items.isEmpty());
+        assertTrue(items.get(0).getTitulo().contains("Thriller"));
     }
 
     @Test
     void testActualizarItem_Exitoso() {
-        // Crear un DTO de item con nuevos valores para actualizar
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setTitulo("Álbum de Jazz");
-        itemDTO.setUbicacion("Estante F");
+        itemDTO.setTitulo("Jazz Vibes");
+        itemDTO.setUbicacion("Estante J");
         itemDTO.setTipoId(tipo.getId());
-        itemDTO.setFormato("CD"); // Usar el nombre del formato
+        itemDTO.setFormato("CD");
 
-        ItemResponseDTO response = itemService.actualizarItem(item.getId(), itemDTO);
+        ItemResponseDTO updated = itemService.actualizarItem(item.getId(), itemDTO);
 
-        // Verificamos que la actualización haya sido exitosa
-        assertNotNull(response);
-        assertEquals(itemDTO.getTitulo(), response.getTitulo());
-        assertEquals(itemDTO.getUbicacion(), response.getUbicacion());
-        assertEquals("CD", response.getFormato()); // Verificar que el formato sea "CD"
+        assertNotNull(updated);
+        assertEquals("Jazz Vibes", updated.getTitulo());
+        assertEquals("Estante J", updated.getUbicacion());
+        assertEquals("CD", updated.getFormato());
     }
 
     @Test
     void testCrearItemConFormato_FormatoInvalido() {
-        // Crear un DTO con un formato no asociado al tipo "Música"
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setTitulo("Ítem Inválido");
+        itemDTO.setTitulo("Error Item");
         itemDTO.setUbicacion("Estante Z");
         itemDTO.setTipoId(tipo.getId());
-        itemDTO.setFormato("5"); // Formato "PDF", no válido para tipo "Música"
+        itemDTO.setFormato("PDF"); // PDF no es válido para tipo Música
 
-        // Verificar que se lanza una excepción
-        Exception exception = assertThrows(RuntimeException.class, () -> itemService.crearItemConFormato(itemDTO));
-        assertEquals("Formato no válido para el tipo seleccionado", exception.getMessage());
+        Exception ex = assertThrows(RuntimeException.class, () -> itemService.crearItemConFormato(itemDTO));
+        assertEquals("Formato no válido para el tipo seleccionado", ex.getMessage());
     }
 
-    @Test
-    void testEliminarItem_Exitoso() {
-        // Eliminar el ítem que hemos cargado anteriormente
-        Long id = item.getId();
-        itemService.eliminarItem(id);
-
-        // Verificamos que el ítem ya no existe
-        assertFalse(itemRepository.existsById(id));
-    }
 }

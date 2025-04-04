@@ -66,7 +66,7 @@ export class ItemRestService {
   }
 
 
-  actualizarItem(id: number, itemDetails: Item): Observable<Item> {
+  /*actualizarItem(id: number, itemDetails: Item): Observable<Item> {
     const url = `${this.apiUrl}/${id}`;
 
     return this.http.put<Item>(url, itemDetails, {
@@ -74,7 +74,17 @@ export class ItemRestService {
         'Content-Type': 'application/json',
       }),
     });
-  }
+  }*/
+    actualizarItemDTO(id: number, itemDTO: any): Observable<Item> {
+      return this.http.put<Item>(`${this.apiUrl}/${id}`, itemDTO);
+    }
+   
+    obtenerTipos(): Observable<Tipo[]> {
+      return this.http.get<Tipo[]>(`http://localhost:4200/api/tipo`);
+    }
+    
+    
+
   getItemById(id: number): Observable<Item> {
     return this.http.get<Item>(`${this.apiUrl}/${id}`);
   }

@@ -19,6 +19,7 @@ import { EliminarItemComponent } from '../eliminarItem/eliminarItem.component';
 })
 export class ListaitemsComponent {
   listaItems: Item[] = [];
+  tipos: Tipo[] = [];
   item: Item = {} as Item;
   tituloBusqueda: string = '';
   tipoBusqueda: string = '';
@@ -33,7 +34,28 @@ export class ListaitemsComponent {
   constructor(private itemRestService: ItemRestService, private cdr: ChangeDetectorRef) {
     this.cargarEstado();
     this.buscar();
+    this.cargarTipos();
   }
+
+  private prepararItemDTO(item: Item): any {
+    return {
+      titulo: item.titulo,
+      ubicacion: item.ubicacion,
+      tipoId: item.tipoId,
+      formato: item.formato,
+      fechaAdquisicion: item.fechaAdquisicion?.split('T')[0]
+    };
+  }
+
+  cargarTipos(): void {
+    this.itemRestService.obtenerTipos().subscribe({
+      next: (tipos) => this.tipos = tipos,
+      error: (err) => console.error('Error al obtener tipos', err)
+    });
+  }
+  
+  
+  
 
   buscar(): void {
     this.itemRestService
@@ -90,6 +112,7 @@ export class ListaitemsComponent {
       this.cdr.detectChanges(); // asegurar actualización visual
       const modal = new bootstrap.Modal(modalElement!);
       modal.show();
+      
     }, 100); // un pequeño delay ayuda
   }
   
@@ -105,15 +128,30 @@ export class ListaitemsComponent {
   }
 
   abrirModalEditar(item: Item): void {
-    this.itemSeleccionado = { ...item };
+    const tipoEncontrado = this.tipos.find(t => t.nombre === item.tipo);
+    const tipoId = tipoEncontrado ? tipoEncontrado.id : 1; // usar 1 si no lo encuentra
+  
+    this.itemSeleccionado = {
+      id: item.id,
+      titulo: item.titulo,
+      ubicacion: item.ubicacion,
+      fechaAdquisicion: item.fechaAdquisicion,
+      estado: item.estado,
+      tipoId: tipoId,
+      formato: item.formato,
+      prestamo: item.prestamo ?? {} as any,
+      tipo: item.tipo
+    };
+  
     setTimeout(() => {
       const modalElement = document.getElementById('modificarItemModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement, { backdrop: 'static' });
         modal.show();
       }
-    }, 0); // asegura que Angular renderizó
+    }, 0);
   }
+  
   
 
   cerrarModalEditar(): void {
@@ -189,23 +227,43 @@ export class ListaitemsComponent {
   }
 
   guardarCambios(): void {
+    console.log('[✔] Intentando guardar cambios...');
+  
     if (this.itemSeleccionado) {
-      const index = this.listaItems.findIndex(item => item.id === this.itemSeleccionado?.id);
-      if (index !== -1) {
-        // 🔁 Actualiza los campos editables directamente
-        this.listaItems[index].titulo = this.itemSeleccionado.titulo;
-        this.listaItems[index].ubicacion = this.itemSeleccionado.ubicacion;
-        this.listaItems[index].estado = this.itemSeleccionado.estado;
-        // Reemplazamos el item editado en la lista
-      this.listaItems[index] = { ...this.itemSeleccionado };
+      console.log('[✔] Item seleccionado:', this.itemSeleccionado);
+  
+      if (
+        !this.itemSeleccionado.tipoId ||
+        !this.itemSeleccionado.formato ||
+        !this.itemSeleccionado.fechaAdquisicion
+      ) {
+        console.error('[⛔] Faltan campos obligatorios para actualizar');
+        return;
       }
   
-      // ✅ Cierra el modal de edición y refresca la tabla
-      this.cerrarModalEditar();
-      this.cdr.detectChanges();
+      const itemDTO = this.prepararItemDTO(this.itemSeleccionado);
+      console.log('[✔] Enviando DTO al backend:', itemDTO);
+  
+      this.itemRestService.actualizarItemDTO(this.itemSeleccionado.id, itemDTO).subscribe(
+        (itemActualizado) => {
+          console.log('[✅] Item actualizado:', itemActualizado);
+          const index = this.listaItems.findIndex(item => item.id === this.itemSeleccionado?.id);
+          if (index !== -1) {
+            this.listaItems[index] = this.itemSeleccionado as Item;
+            this.cdr.detectChanges();
+          }
+          this.cerrarModalEditar();
+          this.buscar();
+        },
+        (error) => {
+          console.error('[❌] Error al actualizar el item:', error);
+        }
+      );
     }
   }
   
+  
+
 
   guardarEstado(): void {
     const estado = {

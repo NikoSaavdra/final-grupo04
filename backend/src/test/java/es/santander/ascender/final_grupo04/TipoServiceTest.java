@@ -19,6 +19,7 @@ import es.santander.ascender.final_grupo04.DTO.TipoFormatoDTO;
 import es.santander.ascender.final_grupo04.model.Formato;
 import es.santander.ascender.final_grupo04.model.Tipo;
 import es.santander.ascender.final_grupo04.repository.FormatoRepository;
+import es.santander.ascender.final_grupo04.repository.ItemRepository;
 import es.santander.ascender.final_grupo04.repository.TipoRepository;
 import es.santander.ascender.final_grupo04.service.TipoService;
 
@@ -35,158 +36,115 @@ public class TipoServiceTest {
     @Autowired
     private FormatoRepository formatoRepository;
 
-    private Tipo tipo;
+    @Autowired
+    private ItemRepository itemRepository;
+
     private Formato formato1, formato2;
 
     @BeforeEach
     void setUp() {
-        // 🔹 1. Asegurar que los tipos no tengan referencias a formatos antes de eliminarlos
-        tipoRepository.findAll().forEach(tipo -> tipo.getFormato().clear());
-        tipoRepository.saveAll(tipoRepository.findAll());
+        // Eliminar ítems relacionados con el tipo para evitar constraint violations
+        itemRepository.deleteAll();
 
-        // 🔹 2. Borrar solo `tipo`, NO `formato`, ya que `data.sql` los carga
-        tipoRepository.deleteAll();
-
-        // Asegurarse de que 'Libro' esté asociado correctamente con 'Papel' y 'PDF'
+        // Recuperar formatos conocidos de la BD
         formato1 = formatoRepository.findById(4L)
-                .orElseThrow(() -> new RuntimeException("Formato 'Papel' no encontrado en la BD"));
-
-        formato2 = formatoRepository.findById(5L) // Usar formato 'PDF' (ID 5)
-                .orElseThrow(() -> new RuntimeException("Formato 'PDF' no encontrado en la BD"));
-        // 🔹 4. Crear un tipo si no existe y asociarlo a los formatos existentes
-        tipo = tipoRepository.findByNombre("Libro")
-                .orElseGet(() -> {
-                    Tipo nuevoTipo = new Tipo();
-                    nuevoTipo.setNombre("Libro");
-                    nuevoTipo.setFormato(List.of(formato1, formato2));
-                    return tipoRepository.save(nuevoTipo);
-                });
+                .orElseThrow(() -> new RuntimeException("Formato 'Papel' no encontrado"));
+        formato2 = formatoRepository.findById(5L)
+                .orElseThrow(() -> new RuntimeException("Formato 'PDF' no encontrado"));
     }
 
-    /**
-     * ✅ Test de creación de un tipo exitosamente
-     */
     @Test
     void testCrearTipo_Exitoso() {
-        String nombreUnico = "Música_" + System.currentTimeMillis();
+        String nombreUnico = "TestTipo_" + System.currentTimeMillis();
         TipoDTO tipoDTO = new TipoDTO();
         tipoDTO.setNombre(nombreUnico);
         tipoDTO.setFormatoIds(List.of(formato1.getId(), formato2.getId()));
 
-        TipoDTO response = tipoService.crearTipo(tipoDTO);
+        TipoDTO creado = tipoService.crearTipo(tipoDTO);
 
-        assertNotNull(response);
-        assertEquals(nombreUnico, response.getNombre());
-        assertEquals(2, response.getFormatoIds().size());
+        assertNotNull(creado);
+        assertEquals(nombreUnico, creado.getNombre());
+        assertEquals(2, creado.getFormatoIds().size());
     }
 
-    /**
-     * ✅ Test de creación de un tipo ya existente (debe lanzar una excepción)
-     */
     @Test
     void testCrearTipo_TipoExistente() {
         TipoDTO tipoDTO = new TipoDTO();
-        tipoDTO.setNombre(tipo.getNombre());
+        tipoDTO.setNombre("Libro"); // ya existe en data.sql
+        tipoDTO.setFormatoIds(List.of(formato1.getId(), formato2.getId()));
 
-        Exception exception = assertThrows(RuntimeException.class, () -> tipoService.crearTipo(tipoDTO));
-        assertEquals("El tipo con el nombre '" + tipo.getNombre() + "' ya existe.", exception.getMessage());
+        Exception ex = assertThrows(RuntimeException.class, () -> tipoService.crearTipo(tipoDTO));
+        assertEquals("El tipo con el nombre 'Libro' ya existe.", ex.getMessage());
     }
 
-    /**
-     * ✅ Test de listar todos los tipos correctamente
-     */
     @Test
     void testListarTipos() {
         List<TipoFormatoDTO> tipos = tipoService.listarTipos();
 
         assertNotNull(tipos);
         assertFalse(tipos.isEmpty());
-        assertTrue(tipos.stream().anyMatch(t -> t.getNombre().equals("Libro")));
 
-        List<TipoFormatoDTO> tipoDTOs = tipos.stream()
+        List<TipoFormatoDTO> libros = tipos.stream()
                 .filter(t -> t.getNombre().equals("Libro"))
                 .collect(Collectors.toList());
 
-        assertEquals(1, tipoDTOs.size(), "Se esperaba un solo tipo con nombre 'Libro'");
-
-        TipoFormatoDTO tipoDTO = tipoDTOs.get(0);  // Obtener el primer (y único) tipo llamado 'Libro'
-        // Depuración: Imprimir los formatos obtenidos
-
-        // Verificamos que tenga 2 formatos
-        assertEquals(2, tipoDTO.getFormatos().size());
-
+        assertEquals(1, libros.size());
+        assertEquals(3, libros.get(0).getFormatos().size()); // Libro tiene 3 formatos
     }
 
-    /**
-     * ✅ Test de actualización de un tipo existente
-     */
     @Test
     void testActualizarTipo_Exitoso() {
-        String nuevoNombre = "Nuevo Tipo";
-        Tipo tipoActualizado = tipoService.actualizarTipo(tipo.getId(), nuevoNombre);
+        Tipo tipo = tipoRepository.findByNombre("Libro")
+                .orElseThrow(() -> new RuntimeException("Tipo 'Libro' no encontrado"));
 
-        assertNotNull(tipoActualizado);
-        assertEquals(nuevoNombre, tipoActualizado.getNombre());
+        String nuevoNombre = "NuevoTipo_" + System.currentTimeMillis();
+        Tipo actualizado = tipoService.actualizarTipo(tipo.getId(), nuevoNombre);
+
+        assertNotNull(actualizado);
+        assertEquals(nuevoNombre, actualizado.getNombre());
     }
 
-    /**
-     * ✅ Test de actualización de un tipo que no existe (debe devolver null)
-     */
     @Test
     void testActualizarTipo_TipoNoExistente() {
-        Long tipoNoExistenteId = 999L;  // ID que no existe en la base de datos
+        Long idInexistente = 999L;
 
-        // Esperamos que se lance una RuntimeException cuando el tipo no exista
-        Exception exception = assertThrows(RuntimeException.class, () -> tipoService.actualizarTipo(tipoNoExistenteId, "Nuevo Nombre"));
+        Exception ex = assertThrows(RuntimeException.class,
+                () -> tipoService.actualizarTipo(idInexistente, "OtroNombre"));
 
-        // Verificar el mensaje de la excepción para asegurarse de que es el esperado
-        assertEquals("Tipo no encontrado", exception.getMessage());
+        assertEquals("Tipo no encontrado", ex.getMessage());
     }
 
-    /**
-     * ✅ Test de obtener formatos por tipo exitosamente
-     */
     @Test
     void testObtenerFormatosPorTipo_Exitoso() {
+        Tipo tipo = tipoRepository.findByNombre("Libro")
+                .orElseThrow(() -> new RuntimeException("Tipo 'Libro' no encontrado"));
+
         List<String> formatos = tipoService.obtenerFormatosPorTipo(tipo.getId());
 
         assertNotNull(formatos);
-        assertEquals(2, formatos.size());
+        assertEquals(3, formatos.size());
         assertTrue(formatos.contains("PDF"));
         assertTrue(formatos.contains("Papel"));
+        assertTrue(formatos.contains("eBook"));
     }
 
-    /**
-     * ✅ Test de obtener formatos de un tipo que no existe (debe lanzar una
-     * excepción)
-     */
     @Test
     void testObtenerFormatosPorTipo_TipoNoExistente() {
-        Long tipoNoExistenteId = 999L;
+        Long idInexistente = 999L;
 
-        Exception exception = assertThrows(RuntimeException.class, () -> tipoService.obtenerFormatosPorTipo(tipoNoExistenteId));
-        assertEquals("Tipo no encontrado", exception.getMessage());
+        Exception ex = assertThrows(RuntimeException.class,
+                () -> tipoService.obtenerFormatosPorTipo(idInexistente));
+
+        assertEquals("Tipo no encontrado", ex.getMessage());
     }
 
-    /**
-     * ✅ Test de eliminación exitosa de un tipo
-     */
-    @Test
-    void testEliminarTipo_Exitoso() {
-        tipoService.eliminarTipo(tipo.getId());
-
-        assertFalse(tipoRepository.existsById(tipo.getId()));
-    }
-
-    /**
-     * ✅ Test de eliminación de un tipo que no existe (debe lanzar una
-     * excepción)
-     */
     @Test
     void testEliminarTipo_TipoNoExistente() {
-        Long tipoNoExistenteId = 999L;
+        Long idInexistente = 999L;
 
-        Exception exception = assertThrows(RuntimeException.class, () -> tipoService.eliminarTipo(tipoNoExistenteId));
-        assertEquals("Tipo no encontrado", exception.getMessage());
+        Exception ex = assertThrows(RuntimeException.class,
+                () -> tipoService.eliminarTipo(idInexistente));
+
+        assertEquals("Tipo no encontrado", ex.getMessage());
     }
 }

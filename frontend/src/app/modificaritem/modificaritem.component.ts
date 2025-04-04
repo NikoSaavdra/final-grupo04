@@ -42,7 +42,7 @@ export class ModificaritemComponent implements OnInit {
   }
 
   actualizarItem(): void {
-    this.itemRestService.actualizarItem(this.item.id, this.item).subscribe({
+    this.itemRestService.actualizarItemDTO(this.item.id, this.item).subscribe({
       next: (data) => {
         console.log('✅ Item actualizado:', data);
         this.itemActualizado.emit(data);
