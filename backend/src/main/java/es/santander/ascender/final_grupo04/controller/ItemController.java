@@ -24,7 +24,7 @@ import es.santander.ascender.final_grupo04.DTO.ItemResponseDTO;
 import es.santander.ascender.final_grupo04.service.ItemService;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins="http://localhost:4200,https://appequipo4.azurewebsites.net")
+@CrossOrigin(origins = { "http://localhost:4200", "https://appequipo4storage.z16.web.core.windows.net" })
 @RestController
 @RequestMapping("/api/item")
 public class ItemController {

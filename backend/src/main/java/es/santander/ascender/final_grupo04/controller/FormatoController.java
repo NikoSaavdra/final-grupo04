@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.santander.ascender.final_grupo04.model.Formato;
 import es.santander.ascender.final_grupo04.repository.FormatoRepository;
 
-@CrossOrigin(origins="http://localhost:4200,https://appequipo4.azurewebsites.net")
+@CrossOrigin(origins = { "http://localhost:4200", "https://appequipo4storage.z16.web.core.windows.net" })
 @RestController
 @RequestMapping("/api/formatos")
 public class FormatoController {

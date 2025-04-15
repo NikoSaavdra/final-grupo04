@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.santander.ascender.final_grupo04.DTO.PrestamoResponseDTO;
 import es.santander.ascender.final_grupo04.service.PrestamoService;
 
-@CrossOrigin(origins="http://localhost:4200,https://appequipo4.azurewebsites.net")
+@CrossOrigin(origins = { "http://localhost:4200", "https://appequipo4storage.z16.web.core.windows.net" })
 @RestController
 @RequestMapping("/api/prestamo")
 public class PrestamoController {

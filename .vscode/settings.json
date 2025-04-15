@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/3d4367fd-4187-4a4e-a1e4-c834c2fc8a41/resourceGroups/AppV2/providers/Microsoft.Web/sites/AppEquipo4",
+    "appService.deploySubpath": "backend\\target\\final-grupo04-0.0.1-SNAPSHOT.jar"
+}
