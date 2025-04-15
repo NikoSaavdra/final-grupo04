@@ -18,7 +18,7 @@ export interface ItemResumen {
 })
 export class ItemRestService {
 
-  private apiUrl = "http://localhost:4200/api/item";
+  private apiUrl = "https://appequipo4.azurewebsites.net/api/item";
   
 
   constructor(private http: HttpClient) { }
@@ -80,7 +80,7 @@ export class ItemRestService {
     }
    
     obtenerTipos(): Observable<Tipo[]> {
-      return this.http.get<Tipo[]>(`http://localhost:4200/api/tipo`);
+      return this.http.get<Tipo[]>(`https://appequipo4.azurewebsites.net/api/tipo`);
     }
     
     

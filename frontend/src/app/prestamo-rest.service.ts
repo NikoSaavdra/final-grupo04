@@ -11,7 +11,7 @@ import { Item } from './item';
 })
 export class PrestamoRestService {
 
-  private apiUrl = "http://localhost:4200/api/prestamo";
+  private apiUrl = "https://appequipo4.azurewebsites.net/api/prestamo";
 
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
@@ -108,6 +108,6 @@ export class PrestamoRestService {
   }
 
   obtenerHistorial(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:4200/api/prestamo/historial');
+    return this.http.get<any[]>('https://appequipo4.azurewebsites.net/api/prestamo/historial');
   }
 }

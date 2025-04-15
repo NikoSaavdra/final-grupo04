@@ -8,7 +8,7 @@ import { TipoDTO, TipoFormatoDTO } from './tipo.dto'; // ← ambos DTOs
 })
 export class TipoRestService {
 
-  private apiUrl = 'http://localhost:4200/api/tipo';
+  private apiUrl = 'https://appequipo4.azurewebsites.net/api/tipo';
 
   constructor(private http: HttpClient) {}
 
