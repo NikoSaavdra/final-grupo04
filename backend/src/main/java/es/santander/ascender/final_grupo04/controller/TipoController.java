@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import es.santander.ascender.final_grupo04.model.Tipo;
 import es.santander.ascender.final_grupo04.service.TipoService;
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins="http://localhost:4200,https://appequipo4.azurewebsites.net")
 @RestController
 @RequestMapping("/api/tipo")
 public class TipoController {
