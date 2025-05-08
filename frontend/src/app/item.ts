@@ -11,7 +11,8 @@ export class Item {
       public tipoId: number,
       public formato: string,
       public prestamo: Prestamo,
-      public tipo?: string 
+      public tipo?: string,
+      public  urlImagen?: string,
     ) {}
   }
   

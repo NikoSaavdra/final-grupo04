@@ -6,6 +6,7 @@ import { Prestamo } from './prestamo';
 import { ItemData } from './item-data';
 import { Tipo } from './tipo';
 import { ItemDTO } from './ItemDTO';
+import { environment } from '../environments/environment.prod';
 
 export interface ItemResumen {
   id: number;
@@ -18,7 +19,8 @@ export interface ItemResumen {
 })
 export class ItemRestService {
 
-  private apiUrl = "https://appequipo4.azurewebsites.net/api/item";
+  //private apiUrl = "http://localhost:4200/api/item";
+  private apiUrl = `${environment.apiUrl}/item`;
   
 
   constructor(private http: HttpClient) { }
@@ -80,7 +82,8 @@ export class ItemRestService {
     }
    
     obtenerTipos(): Observable<Tipo[]> {
-      return this.http.get<Tipo[]>(`https://appequipo4.azurewebsites.net/api/tipo`);
+      return this.http.get<Tipo[]>(`${environment.apiUrl}/tipo`);
+
     }
     
     

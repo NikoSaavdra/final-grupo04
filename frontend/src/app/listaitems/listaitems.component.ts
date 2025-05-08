@@ -64,6 +64,7 @@ export class ListaitemsComponent {
         (response: any) => {
           
           this.listaItems = response.content;
+          console.log('[🧾 Lista recibida]:', response.content);
           this.totalPaginas = response.totalPages;
         },
         (error: any) => {
