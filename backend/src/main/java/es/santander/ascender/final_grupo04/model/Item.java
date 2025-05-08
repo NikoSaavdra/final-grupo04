@@ -29,6 +29,9 @@ public class Item {
 
     private String ubicacion;
 
+    @Column(name = "url_imagen")
+    private String urlImagen;
+
     @Column(name = "fecha_adquisicion")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate FechaAdquisicion;
@@ -51,7 +54,8 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String titulo, String ubicacion, LocalDate fechaAdquisicion, boolean estado, Tipo tipo, Formato formato, Prestamo prestamo) {
+    public Item(Long id, String titulo, String ubicacion, LocalDate fechaAdquisicion,
+            boolean estado, Tipo tipo, Formato formato, Prestamo prestamo, String urlImagen) {
         this.id = id;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
@@ -60,6 +64,7 @@ public class Item {
         this.tipo = tipo;
         this.formato = formato;
         this.prestamo = prestamo;
+        this.urlImagen = urlImagen;
     }
 
     public Long getId() {
@@ -124,6 +129,14 @@ public class Item {
 
     public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
         FechaAdquisicion = fechaAdquisicion;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 
 }

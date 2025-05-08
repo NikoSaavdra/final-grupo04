@@ -10,8 +10,19 @@ public class ItemDTO {
     private String ubicacion;
     private Long tipoId; // ID del tipo asociado
     private String formato;
+    private String urlImagen;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaAdquisicion; // Formato seleccionado (por ejemplo, "CD" o "Vinilo")
+
+    public ItemDTO(String titulo, String ubicacion, Long tipoId, String formato, String urlImagen,
+            LocalDate fechaAdquisicion) {
+        this.titulo = titulo;
+        this.ubicacion = ubicacion;
+        this.tipoId = tipoId;
+        this.formato = formato;
+        this.urlImagen = urlImagen;
+        this.fechaAdquisicion = fechaAdquisicion;
+    }
 
     // Getters y Setters
     public String getTitulo() {
@@ -52,5 +63,13 @@ public class ItemDTO {
 
     public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
         this.fechaAdquisicion = fechaAdquisicion;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 }
